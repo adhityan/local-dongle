@@ -80,7 +80,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Structs\SMSObject.cs" />
     <Compile Include="Util.cs" />
     <EmbeddedResource Include="clientForm.resx">
       <DependentUpon>clientForm.cs</DependentUpon>
@@ -102,6 +101,8 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\DataSources\dongleService.loginResponse.datasource" />
+    <None Include="Properties\DataSources\DongleService.Structs.LoginResponse.datasource" />
+    <None Include="Properties\DataSources\DongleService.Structs.SMSObject.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -111,7 +112,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Service References\DongleServer\dongleService.xsd">
+    <None Include="Service References\DongleServer\DongleService.Structs.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DongleServer\service.wsdl" />
@@ -143,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DongleServer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Structs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

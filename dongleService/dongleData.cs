@@ -4,28 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Data.SqlServerCe;
 
-namespace dongleService
+namespace DongleService
 {
-    public class dongleData
+    public class DongleData
     {
-        private static dongleData singleton = null;
-        public static dongleData Instance
+        private static DongleData singleton = null;
+        public static DongleData Instance
         {
             get
             {
-                if (singleton == null) singleton = new dongleData();
+                if (singleton == null) singleton = new DongleData();
                 return singleton;
             }
         }
 
         private SqlCeConnection connection;
-        private dongleData()
+        private DongleData()
         {
-            connection = new SqlCeConnection(@"Data Source=C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\dongleData.sdf;");
+            connection = new SqlCeConnection(@"Data Source=C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\DongleService\dongledb.sdf;");
             connection.Open();
         }
 
-        ~dongleData()
+        ~DongleData()
         {
             connection.Close();
         }

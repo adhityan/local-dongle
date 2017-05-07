@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.ServiceModel;
-using dongleService;
+using DongleService;
 using System.Data.SqlServerCe;
 using System.Diagnostics;
 
@@ -17,7 +17,7 @@ namespace LocalDongle
     {
         private ServiceHost host;
         private bool letClose = false;
-        private dongleData database;
+        private DongleData database;
 
         private List<KeyValuePair<long, string>> users;
         private List<KeyValuePair<long, string>> groups;
@@ -28,7 +28,7 @@ namespace LocalDongle
         public serverForm()
         {
             InitializeComponent();
-            database = dongleData.Instance;
+            database = DongleData.Instance;
 
             initServer();
             initGroups();
@@ -82,8 +82,8 @@ namespace LocalDongle
 
         private void initServer()
         {
-            Uri baseAddress = new Uri("http://localhost:8080/test");
-            host = new ServiceHost(typeof(dongleService.dongleService), baseAddress);
+            Uri baseAddress = new Uri("net.tcp://localhost:9090/DongleService");
+            host = new ServiceHost(typeof(DongleService.DongleService), baseAddress);
             host.Open();
         }
 
@@ -163,7 +163,7 @@ namespace LocalDongle
                 SqlCeCommand command = new SqlCeCommand("insert into groups(name) values(@name)");
                 command.Parameters.AddWithValue("@name", groupAddTextbox.Text);
 
-                var result = dongleData.Instance.runExecQuery(command);
+                var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
                     groups.Add(new KeyValuePair<long, string>((long)result, groupAddTextbox.Text));
@@ -189,7 +189,7 @@ namespace LocalDongle
                 command.Parameters.AddWithValue("@username", userAddTextbox.Text);
                 command.Parameters.AddWithValue("@password", userAddTextbox.Text.ToLower());
 
-                var result = dongleData.Instance.runExecQuery(command);
+                var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
                     users.Add(new KeyValuePair<long, string>((long)result, userAddTextbox.Text));
@@ -211,7 +211,7 @@ namespace LocalDongle
                 SqlCeCommand command = new SqlCeCommand("delete from groups where id = @id");
                 command.Parameters.AddWithValue("@id", id.ToString());
 
-                var result = dongleData.Instance.runExecQuery(command);
+                var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
                     groups.RemoveAt(index);
@@ -233,7 +233,7 @@ namespace LocalDongle
                 SqlCeCommand command = new SqlCeCommand("delete from users where id = @id");
                 command.Parameters.AddWithValue("@id", id.ToString());
 
-                var result = dongleData.Instance.runExecQuery(command);
+                var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
                     users.RemoveAt(index);
@@ -297,7 +297,7 @@ namespace LocalDongle
                 command.Parameters.AddWithValue("@uid", uid.ToString());
                 command.Parameters.AddWithValue("@gid", gid.ToString());
 
-                var result = dongleData.Instance.runExecQuery(command);
+                var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
                     mapped.Add(new KeyValuePair<long, string>(gid, value));
@@ -324,7 +324,7 @@ namespace LocalDongle
                 command.Parameters.AddWithValue("@uid", uid.ToString());
                 command.Parameters.AddWithValue("@gid", gid.ToString());
 
-                var result = dongleData.Instance.runExecQuery(command);
+                var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
                     unMapped.Add(new KeyValuePair<long, string>(gid, value));

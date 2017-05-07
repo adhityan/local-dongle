@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Reflection;
 using LocalDongle.DongleServer;
 using System.ServiceModel;
-using dongleService;
+using DongleService;
 
 namespace LocalDongle
 {
@@ -40,12 +40,12 @@ namespace LocalDongle
             else if (passwordTextbox.Text.Length == 0) MessageBox.Show("Password is compulsory!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                string url = string.Format("net.tcp://{0}/dongleService", serverpathTextbox.Text);
+                string url = string.Format("net.tcp://{0}/DongleService", serverpathTextbox.Text);
                 try
                 {
-                    using (dongleServiceContractClient client = new dongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url)))
+                    using (DongleServiceContractClient client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url)))
                     {
-                        loginResponse response = client.login(usernameTextbox.Text, passwordTextbox.Text);
+                        DongleService.Structs.LoginResponse response = client.login(usernameTextbox.Text, passwordTextbox.Text);
                         if (response.IsSuccess) gotoClientForm(response.UID);
                         else MessageBox.Show("Invalid username or password!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -102,10 +102,10 @@ namespace LocalDongle
             }
         }
 
-        private void gotoClientForm(int uid)
+        private void gotoClientForm(long uid)
         {
             this.Hide();
-            var form = new clientForm(uid);
+            var form = new clientForm(uid, serverpathTextbox.Text);
             form.Closed += (s, args) => this.Close();
             form.Show();
         }

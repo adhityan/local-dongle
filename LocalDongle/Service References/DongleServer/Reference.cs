@@ -12,42 +12,49 @@ namespace LocalDongle.DongleServer {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DongleServer.dongleServiceContract")]
-    public interface dongleServiceContract {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DongleServer.DongleServiceContract")]
+    public interface DongleServiceContract {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/dongleServiceContract/login", ReplyAction="http://tempuri.org/dongleServiceContract/loginResponse")]
-        dongleService.loginResponse login(string username, string password);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/login", ReplyAction="http://tempuri.org/DongleServiceContract/loginResponse")]
+        DongleService.Structs.LoginResponse login(string username, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/getSMS", ReplyAction="http://tempuri.org/DongleServiceContract/getSMSResponse")]
+        DongleService.Structs.SMSObject[] getSMS(long uid);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface dongleServiceContractChannel : LocalDongle.DongleServer.dongleServiceContract, System.ServiceModel.IClientChannel {
+    public interface DongleServiceContractChannel : LocalDongle.DongleServer.DongleServiceContract, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class dongleServiceContractClient : System.ServiceModel.ClientBase<LocalDongle.DongleServer.dongleServiceContract>, LocalDongle.DongleServer.dongleServiceContract {
+    public partial class DongleServiceContractClient : System.ServiceModel.ClientBase<LocalDongle.DongleServer.DongleServiceContract>, LocalDongle.DongleServer.DongleServiceContract {
         
-        public dongleServiceContractClient() {
+        public DongleServiceContractClient() {
         }
         
-        public dongleServiceContractClient(string endpointConfigurationName) : 
+        public DongleServiceContractClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public dongleServiceContractClient(string endpointConfigurationName, string remoteAddress) : 
+        public DongleServiceContractClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public dongleServiceContractClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public DongleServiceContractClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public dongleServiceContractClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public DongleServiceContractClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
-        public dongleService.loginResponse login(string username, string password) {
+        public DongleService.Structs.LoginResponse login(string username, string password) {
             return base.Channel.login(username, password);
+        }
+        
+        public DongleService.Structs.SMSObject[] getSMS(long uid) {
+            return base.Channel.getSMS(uid);
         }
     }
 }

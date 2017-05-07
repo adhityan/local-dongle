@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
-namespace LocalDongle.Structs
+namespace DongleService.Structs
 {
-    class SMSObject
+    [DataContract]
+    public class SMSObject
     {
+        [DataMember]
         public string from { get; set; }
+
+        [DataMember]
         public string content { get; set; }
+
+        [DataMember]
         public DateTime time { get; set; }
 
         public SMSObject(string from, string content) : this(from, content, DateTime.Now) { }
