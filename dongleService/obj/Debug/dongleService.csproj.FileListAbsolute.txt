@@ -1,0 +1,7 @@
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\dongleData.sdf
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\dongleService.dll.config
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\dongleService.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\dongleService.pdb
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Debug\dongleService.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Debug\dongleService.pdb
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Debug\dongleService.csprojResolveAssemblyReference.cache
