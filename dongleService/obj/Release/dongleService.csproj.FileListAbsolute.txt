@@ -1,6 +1,6 @@
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongledb.sdf
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.dll.config
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.pdb
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Release\dongleService.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Release\dongleService.pdb
-C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongledb.sdf

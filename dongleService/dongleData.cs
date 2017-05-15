@@ -21,7 +21,7 @@ namespace DongleService
         private SqlCeConnection connection;
         private DongleData()
         {
-            connection = new SqlCeConnection(@"Data Source=C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\DongleService\dongledb.sdf;");
+            connection = new SqlCeConnection(@"Data Source=dongledb.sdf;");
             connection.Open();
         }
 

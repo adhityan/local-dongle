@@ -1,4 +1,5 @@
-C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\dongleData.sdf
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\dongledb.sdf
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\LocalDongle.exe.config
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\LocalDongle.exe
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\LocalDongle.pdb
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\dongleService.dll
@@ -6,9 +7,11 @@ C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bi
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.csprojResolveAssemblyReference.cache
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.clientForm.resources
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.loginFrom.resources
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.passwordResetForm.resources
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.Properties.Resources.resources
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.registerForm.resources
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.serverForm.resources
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.verifyServerCred.resources
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.csproj.GenerateResource.Cache
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.exe
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.pdb
-C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\LocalDongle.exe.config

@@ -52,6 +52,24 @@
   <wsdl:message name="DongleServiceContract_getSMS_OutputMessage">
     <wsdl:part name="parameters" element="tns:getSMSResponse" />
   </wsdl:message>
+  <wsdl:message name="DongleServiceContract_addNewUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:addNewUser" />
+  </wsdl:message>
+  <wsdl:message name="DongleServiceContract_addNewUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:addNewUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="DongleServiceContract_updatePassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:updatePassword" />
+  </wsdl:message>
+  <wsdl:message name="DongleServiceContract_updatePassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:updatePasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="DongleServiceContract_sendSMS_InputMessage">
+    <wsdl:part name="parameters" element="tns:sendSMS" />
+  </wsdl:message>
+  <wsdl:message name="DongleServiceContract_sendSMS_OutputMessage">
+    <wsdl:part name="parameters" element="tns:sendSMSResponse" />
+  </wsdl:message>
   <wsdl:portType name="DongleServiceContract">
     <wsdl:operation name="login">
       <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/login" message="tns:DongleServiceContract_login_InputMessage" />
@@ -60,6 +78,18 @@
     <wsdl:operation name="getSMS">
       <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/getSMS" message="tns:DongleServiceContract_getSMS_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/getSMSResponse" message="tns:DongleServiceContract_getSMS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="addNewUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/addNewUser" message="tns:DongleServiceContract_addNewUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/addNewUserResponse" message="tns:DongleServiceContract_addNewUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="updatePassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/updatePassword" message="tns:DongleServiceContract_updatePassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/updatePasswordResponse" message="tns:DongleServiceContract_updatePassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/sendSMS" message="tns:DongleServiceContract_sendSMS_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/sendSMSResponse" message="tns:DongleServiceContract_sendSMS_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_DongleServiceContract" type="tns:DongleServiceContract">
@@ -77,6 +107,33 @@
     </wsdl:operation>
     <wsdl:operation name="getSMS">
       <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/getSMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addNewUser">
+      <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/addNewUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="updatePassword">
+      <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/updatePassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendSMS">
+      <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/sendSMS" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

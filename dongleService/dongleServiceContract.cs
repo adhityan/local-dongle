@@ -16,5 +16,14 @@ namespace DongleService
 
         [OperationContract]
         SMSObject[] getSMS(long uid);
+
+        [OperationContract]
+        ExecuteResponse addNewUser(string username, string password, string name, string email);
+
+        [OperationContract]
+        ExecuteResponse updatePassword(long uid, string password);
+
+        [OperationContract]
+        ExecuteResponse sendSMS(long senderId, string to, string messsage);
     }
 }

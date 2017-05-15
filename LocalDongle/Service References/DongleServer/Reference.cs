@@ -20,6 +20,15 @@ namespace LocalDongle.DongleServer {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/getSMS", ReplyAction="http://tempuri.org/DongleServiceContract/getSMSResponse")]
         DongleService.Structs.SMSObject[] getSMS(long uid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/addNewUser", ReplyAction="http://tempuri.org/DongleServiceContract/addNewUserResponse")]
+        DongleService.Structs.ExecuteResponse addNewUser(string username, string password, string name, string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/updatePassword", ReplyAction="http://tempuri.org/DongleServiceContract/updatePasswordResponse")]
+        DongleService.Structs.ExecuteResponse updatePassword(long uid, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/sendSMS", ReplyAction="http://tempuri.org/DongleServiceContract/sendSMSResponse")]
+        DongleService.Structs.ExecuteResponse sendSMS(long senderId, string to, string messsage);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,6 +64,18 @@ namespace LocalDongle.DongleServer {
         
         public DongleService.Structs.SMSObject[] getSMS(long uid) {
             return base.Channel.getSMS(uid);
+        }
+        
+        public DongleService.Structs.ExecuteResponse addNewUser(string username, string password, string name, string email) {
+            return base.Channel.addNewUser(username, password, name, email);
+        }
+        
+        public DongleService.Structs.ExecuteResponse updatePassword(long uid, string password) {
+            return base.Channel.updatePassword(uid, password);
+        }
+        
+        public DongleService.Structs.ExecuteResponse sendSMS(long senderId, string to, string messsage) {
+            return base.Channel.sendSMS(senderId, to, messsage);
         }
     }
 }

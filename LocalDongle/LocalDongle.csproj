@@ -67,8 +67,20 @@
     <Compile Include="loginFrom.Designer.cs">
       <DependentUpon>loginFrom.cs</DependentUpon>
     </Compile>
+    <Compile Include="passwordResetForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="passwordResetForm.Designer.cs">
+      <DependentUpon>passwordResetForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="registerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="registerForm.Designer.cs">
+      <DependentUpon>registerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="serverForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,11 +93,20 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
+    <Compile Include="verifyServerCred.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="verifyServerCred.Designer.cs">
+      <DependentUpon>verifyServerCred.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="clientForm.resx">
       <DependentUpon>clientForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="loginFrom.resx">
       <DependentUpon>loginFrom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="passwordResetForm.resx">
+      <DependentUpon>passwordResetForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -96,11 +117,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="registerForm.resx">
+      <DependentUpon>registerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="serverForm.resx">
       <DependentUpon>serverForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="verifyServerCred.resx">
+      <DependentUpon>verifyServerCred.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\DataSources\dongleService.loginResponse.datasource" />
+    <None Include="Properties\DataSources\DongleService.Structs.ExecuteResponse.datasource" />
     <None Include="Properties\DataSources\DongleService.Structs.LoginResponse.datasource" />
     <None Include="Properties\DataSources\DongleService.Structs.SMSObject.datasource" />
     <None Include="Properties\Settings.settings">
@@ -134,9 +162,9 @@
     <None Include="Service References\DongleServer\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dongleService\dongleService.csproj">
+    <ProjectReference Include="..\dongleService\DongleService.csproj">
       <Project>{7D42ACE5-7229-46E5-9380-F01C97D279C0}</Project>
-      <Name>dongleService</Name>
+      <Name>DongleService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

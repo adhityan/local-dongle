@@ -21,4 +21,11 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SMSObject" nillable="true" type="tns:SMSObject" />
+  <xs:complexType name="ExecuteResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="errorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExecuteResponse" nillable="true" type="tns:ExecuteResponse" />
 </xs:schema>

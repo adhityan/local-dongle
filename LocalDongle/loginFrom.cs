@@ -34,18 +34,17 @@ namespace LocalDongle
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-
             if (serverpathTextbox.Text.Length == 0) MessageBox.Show("Server url is compulsory!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (usernameTextbox.Text.Length == 0) MessageBox.Show("Username is compulsory!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (passwordTextbox.Text.Length == 0) MessageBox.Show("Password is compulsory!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else
             {
-                string url = string.Format("net.tcp://{0}/DongleService", serverpathTextbox.Text);
+                string url = string.Format("net.tcp://{0}:9090/DongleService", serverpathTextbox.Text);
                 try
                 {
                     using (DongleServiceContractClient client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url)))
                     {
-                        DongleService.Structs.LoginResponse response = client.login(usernameTextbox.Text, passwordTextbox.Text);
+                        var response = client.login(usernameTextbox.Text, passwordTextbox.Text);
                         if (response.IsSuccess) gotoClientForm(response.UID);
                         else MessageBox.Show("Invalid username or password!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -73,10 +72,13 @@ namespace LocalDongle
         {
             if (Util.IsElevated())
             {
-                var form = new serverForm();
-                form.Shown += (s, args) => this.Hide();
-                form.Closed += (s, args) => this.Close();
-                form.Show();
+                if ((new verifyServerCred()).ShowDialog() == System.Windows.Forms.DialogResult.Yes)
+                {
+                    var form = new serverForm();
+                    form.Shown += (s, args) => this.Hide();
+                    form.Closed += (s, args) => this.Close();
+                    form.Show();
+                }
             }
             else
             {
@@ -95,7 +97,7 @@ namespace LocalDongle
                     process.Start();
                     this.Close();
                 }
-                catch 
+                catch
                 {
                     MessageBox.Show("You need to have admininstrator access on this machine to start the server", "Could not start server", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -105,9 +107,26 @@ namespace LocalDongle
         private void gotoClientForm(long uid)
         {
             this.Hide();
-            var form = new clientForm(uid, serverpathTextbox.Text);
+            var form = new clientForm(uid, string.Format("net.tcp://{0}:9090/DongleService", serverpathTextbox.Text));
             form.Closed += (s, args) => this.Close();
             form.Show();
+        }
+
+        private void registerButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                string url = string.Format("net.tcp://{0}:9090/DongleService", serverpathTextbox.Text);
+                using (DongleServiceContractClient client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url)))
+                {
+                    var result = (new registerForm(client)).ShowDialog();
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                    {
+                        MessageBox.Show("User login requested. Pending approval", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch { MessageBox.Show("No server found at this location", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
     }
 }

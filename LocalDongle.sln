@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalDongle", "LocalDongle\LocalDongle.csproj", "{6261DA99-72F0-4659-9221-E553D0B435BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dongleService", "dongleService\dongleService.csproj", "{7D42ACE5-7229-46E5-9380-F01C97D279C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DongleService", "dongleService\DongleService.csproj", "{7D42ACE5-7229-46E5-9380-F01C97D279C0}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "LocalDongleInstaller", "LocalDongleInstaller\LocalDongleInstaller.vdproj", "{3609C28C-1F0E-4863-BC6E-DBF13EFA4DC7}"
 EndProject
