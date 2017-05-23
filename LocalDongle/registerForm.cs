@@ -70,6 +70,16 @@ namespace LocalDongle
                 MessageBox.Show("Username cannot have upper case characters", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
+            else if (phoneTextbox.Text.Length == 0)
+            {
+                MessageBox.Show("Phone number cannot be left empty", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+            else if (phoneTextbox.Text.Length != 10 || phoneTextbox.Text.Any(c => !char.IsDigit(c)))
+            {
+                MessageBox.Show("Phone number must be 10 digits", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
 
             bool result = false;
             if (isServer) result = handleRegisterOnServer();
@@ -84,7 +94,7 @@ namespace LocalDongle
         {
             try
             {
-                var response = client.addNewUser(usernameTextbox.Text, passwordTextbox.Text, nameTextbox.Text, emailTextbox.Text);
+                var response = client.addNewUser(usernameTextbox.Text, passwordTextbox.Text, phoneTextbox.Text, nameTextbox.Text, emailTextbox.Text);
                 if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return response.status;
             }
@@ -99,9 +109,10 @@ namespace LocalDongle
         {
             try
             {
-                SqlCeCommand command = new SqlCeCommand("insert into users(username, password, name, email) values(@username, @password, @name, @email)");
+                SqlCeCommand command = new SqlCeCommand("insert into users(username, password, name, email, phone) values(@username, @password, @name, @email, @phone)");
                 command.Parameters.AddWithValue("@username", usernameTextbox.Text);
                 command.Parameters.AddWithValue("@password", passwordTextbox.Text);
+                command.Parameters.AddWithValue("@phone", phoneTextbox.Text);
                 command.Parameters.AddWithValue("@email", emailTextbox.Text);
                 command.Parameters.AddWithValue("@name", nameTextbox.Text);
 
@@ -109,7 +120,7 @@ namespace LocalDongle
                 if (result != 0) return true;
                 else MessageBox.Show("Adding new user failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch { MessageBox.Show("That user name is already taken", "Try again!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
+            catch { MessageBox.Show("That user name or phone number is already taken", "Try again!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
             return false;
         }
 
@@ -130,6 +141,14 @@ namespace LocalDongle
         }
 
         private void emailTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                requestButton.PerformClick();
+            }
+        }
+
+        private void phoneTextbox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {

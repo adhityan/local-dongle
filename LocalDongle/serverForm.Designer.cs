@@ -61,6 +61,7 @@
             this.approvePendingUserButton = new System.Windows.Forms.Button();
             this.rejectPendingUserButton = new System.Windows.Forms.Button();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.showMailboxButton = new System.Windows.Forms.Button();
             this.notifyMenuStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -428,6 +429,19 @@
             this.updateTimer.Interval = 5000;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
+            // showMailboxButton
+            // 
+            this.showMailboxButton.BackColor = System.Drawing.Color.Transparent;
+            this.showMailboxButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.showMailboxButton.ForeColor = System.Drawing.Color.White;
+            this.showMailboxButton.Location = new System.Drawing.Point(12, 449);
+            this.showMailboxButton.Name = "showMailboxButton";
+            this.showMailboxButton.Size = new System.Drawing.Size(108, 41);
+            this.showMailboxButton.TabIndex = 19;
+            this.showMailboxButton.Text = "Show mailbox";
+            this.showMailboxButton.UseVisualStyleBackColor = false;
+            this.showMailboxButton.Click += new System.EventHandler(this.showMailboxButton_Click);
+            // 
             // serverForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -435,6 +449,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(871, 498);
+            this.Controls.Add(this.showMailboxButton);
             this.Controls.Add(this.stopServerButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -489,5 +504,6 @@
         private System.Windows.Forms.ComboBox pendingDropdown;
         private System.Windows.Forms.Button approvePendingUserButton;
         private System.Windows.Forms.Timer updateTimer;
+        private System.Windows.Forms.Button showMailboxButton;
     }
 }

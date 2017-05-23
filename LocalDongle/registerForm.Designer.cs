@@ -37,6 +37,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.phoneTextbox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.emailTextbox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
@@ -52,10 +54,10 @@
             // 
             // requestButton
             // 
-            this.requestButton.Location = new System.Drawing.Point(227, 126);
+            this.requestButton.Location = new System.Drawing.Point(227, 158);
             this.requestButton.Name = "requestButton";
             this.requestButton.Size = new System.Drawing.Size(81, 32);
-            this.requestButton.TabIndex = 5;
+            this.requestButton.TabIndex = 6;
             this.requestButton.Text = "Request";
             this.requestButton.UseVisualStyleBackColor = true;
             this.requestButton.Click += new System.EventHandler(this.requestButton_Click);
@@ -69,6 +71,7 @@
             this.passwordTextbox.Name = "passwordTextbox";
             this.passwordTextbox.Size = new System.Drawing.Size(230, 22);
             this.passwordTextbox.TabIndex = 2;
+            this.passwordTextbox.UseSystemPasswordChar = true;
             this.passwordTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTextbox_KeyDown);
             // 
             // nameTextbox
@@ -114,28 +117,50 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 101);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
+            this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 14;
-            this.label4.Text = "Email";
+            this.label4.Text = "Phone";
+            // 
+            // phoneTextbox
+            // 
+            this.phoneTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.phoneTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.phoneTextbox.Location = new System.Drawing.Point(78, 96);
+            this.phoneTextbox.MaxLength = 10;
+            this.phoneTextbox.Name = "phoneTextbox";
+            this.phoneTextbox.Size = new System.Drawing.Size(230, 22);
+            this.phoneTextbox.TabIndex = 4;
+            this.phoneTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.phoneTextbox_KeyDown);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 129);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Email";
             // 
             // emailTextbox
             // 
             this.emailTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.emailTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.emailTextbox.Location = new System.Drawing.Point(78, 96);
+            this.emailTextbox.Location = new System.Drawing.Point(78, 124);
             this.emailTextbox.MaxLength = 50;
             this.emailTextbox.Name = "emailTextbox";
             this.emailTextbox.Size = new System.Drawing.Size(230, 22);
-            this.emailTextbox.TabIndex = 4;
+            this.emailTextbox.TabIndex = 5;
             this.emailTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.emailTextbox_KeyDown);
             // 
             // registerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(320, 169);
-            this.Controls.Add(this.label4);
+            this.ClientSize = new System.Drawing.Size(320, 202);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.emailTextbox);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.phoneTextbox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -168,6 +193,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox phoneTextbox;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox emailTextbox;
     }
 }

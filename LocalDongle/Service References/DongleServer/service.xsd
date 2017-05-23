@@ -16,17 +16,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="getSMS">
+  <xs:element name="getIncomingSms">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="uid" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="getSMSResponse">
+  <xs:element name="getIncomingSmsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="getSMSResult" nillable="true" type="q2:ArrayOfSMSObject" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="getIncomingSmsResult" nillable="true" type="q2:ArrayOfSMSObject" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -35,6 +35,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
       </xs:sequence>
@@ -75,6 +76,20 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="sendSMSResult" nillable="true" type="q5:ExecuteResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="setComId">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="comId" type="xs:unsignedShort" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="setComIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="setComIdResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

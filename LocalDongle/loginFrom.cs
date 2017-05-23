@@ -11,6 +11,7 @@ using System.Reflection;
 using LocalDongle.DongleServer;
 using System.ServiceModel;
 using DongleService;
+using GsmComm.GsmCommunication;
 
 namespace LocalDongle
 {
@@ -72,13 +73,24 @@ namespace LocalDongle
         {
             if (Util.IsElevated())
             {
-                if ((new verifyServerCred()).ShowDialog() == System.Windows.Forms.DialogResult.Yes)
+                ushort comId;
+
+                if (ushort.TryParse(portInputTextbox.Text, out comId))
                 {
-                    var form = new serverForm();
-                    form.Shown += (s, args) => this.Hide();
-                    form.Closed += (s, args) => this.Close();
-                    form.Show();
+                    if ((new verifyServerCred()).ShowDialog() == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        var form = serverForm.getInstance(comId);
+
+                        if (form != null)
+                        {
+                            form.Shown += (s, args) => this.Hide();
+                            form.Closed += (s, args) => this.Close();
+                            form.Show();
+                        }
+                        else MessageBox.Show(string.Format("Could not connect to dongle at COM{0}", comId), "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+                else MessageBox.Show("COM ID Entered does not look valid", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
@@ -107,9 +119,15 @@ namespace LocalDongle
         private void gotoClientForm(long uid)
         {
             this.Hide();
-            var form = new clientForm(uid, string.Format("net.tcp://{0}:9090/DongleService", serverpathTextbox.Text));
-            form.Closed += (s, args) => this.Close();
-            form.Show();
+            var form = clientForm.getInstance(uid, string.Format("net.tcp://{0}:9090/DongleService", serverpathTextbox.Text));
+
+            if (form != null)
+            {
+                form.Closed += (s, args) => this.Close();
+                form.Show();
+            }
+            else MessageBox.Show("Trouble connecting to the server. Please try again.", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
         }
 
         private void registerButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -122,11 +140,29 @@ namespace LocalDongle
                     var result = (new registerForm(client)).ShowDialog();
                     if (result == System.Windows.Forms.DialogResult.OK)
                     {
-                        MessageBox.Show("User login requested. Pending approval", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("User login requested. Pending approval.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
             catch { MessageBox.Show("No server found at this location", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+        }
+
+        private void testPortButton_Click(object sender, EventArgs e)
+        {
+            ushort comId;
+
+            if (ushort.TryParse(portInputTextbox.Text, out comId))
+            {
+                GsmCommMain comm = new GsmCommMain(ushort.Parse(portInputTextbox.Text), 460800, 1000);
+
+                try
+                {
+                    comm.Open(); comm.Close();
+                    MessageBox.Show("Port found running device", "Test", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                }
+                catch { if (comm.IsOpen()) comm.Close(); MessageBox.Show("Port not active. Try again.", "Test", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+            }
+            else MessageBox.Show("COM ID Entered does not look valid", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

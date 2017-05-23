@@ -4,3 +4,9 @@ C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\dongleService.pdb
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Debug\dongleService.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Debug\dongleService.pdb
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\System.Data.SqlServerCe.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Debug\DongleService.csprojResolveAssemblyReference.cache
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\GSMCommServer.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\GSMCommShared.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\GSMCommunication.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Debug\PDUConverter.dll

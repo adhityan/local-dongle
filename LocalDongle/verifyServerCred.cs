@@ -18,8 +18,8 @@ namespace LocalDongle
         {
             InitializeComponent();
 
-            username = "scott";
-            password = "tiger";
+            username = "";
+            password = "";
         }
 
         private void launchButton_Click(object sender, EventArgs e)
@@ -33,6 +33,14 @@ namespace LocalDongle
         }
 
         private void passwordTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                launchButton.PerformClick();
+            }
+        }
+
+        private void usernameTextbox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {

@@ -15,10 +15,10 @@ namespace DongleService
         LoginResponse login(string username, string password);
 
         [OperationContract]
-        SMSObject[] getSMS(long uid);
+        SMSObject[] getIncomingSms(long uid);
 
         [OperationContract]
-        ExecuteResponse addNewUser(string username, string password, string name, string email);
+        ExecuteResponse addNewUser(string username, string password, string phone, string name, string email);
 
         [OperationContract]
         ExecuteResponse updatePassword(long uid, string password);

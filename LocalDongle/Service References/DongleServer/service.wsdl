@@ -46,11 +46,11 @@
   <wsdl:message name="DongleServiceContract_login_OutputMessage">
     <wsdl:part name="parameters" element="tns:loginResponse" />
   </wsdl:message>
-  <wsdl:message name="DongleServiceContract_getSMS_InputMessage">
-    <wsdl:part name="parameters" element="tns:getSMS" />
+  <wsdl:message name="DongleServiceContract_getIncomingSms_InputMessage">
+    <wsdl:part name="parameters" element="tns:getIncomingSms" />
   </wsdl:message>
-  <wsdl:message name="DongleServiceContract_getSMS_OutputMessage">
-    <wsdl:part name="parameters" element="tns:getSMSResponse" />
+  <wsdl:message name="DongleServiceContract_getIncomingSms_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getIncomingSmsResponse" />
   </wsdl:message>
   <wsdl:message name="DongleServiceContract_addNewUser_InputMessage">
     <wsdl:part name="parameters" element="tns:addNewUser" />
@@ -70,14 +70,20 @@
   <wsdl:message name="DongleServiceContract_sendSMS_OutputMessage">
     <wsdl:part name="parameters" element="tns:sendSMSResponse" />
   </wsdl:message>
+  <wsdl:message name="DongleServiceContract_setComId_InputMessage">
+    <wsdl:part name="parameters" element="tns:setComId" />
+  </wsdl:message>
+  <wsdl:message name="DongleServiceContract_setComId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:setComIdResponse" />
+  </wsdl:message>
   <wsdl:portType name="DongleServiceContract">
     <wsdl:operation name="login">
       <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/login" message="tns:DongleServiceContract_login_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/loginResponse" message="tns:DongleServiceContract_login_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="getSMS">
-      <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/getSMS" message="tns:DongleServiceContract_getSMS_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/getSMSResponse" message="tns:DongleServiceContract_getSMS_OutputMessage" />
+    <wsdl:operation name="getIncomingSms">
+      <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/getIncomingSms" message="tns:DongleServiceContract_getIncomingSms_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/getIncomingSmsResponse" message="tns:DongleServiceContract_getIncomingSms_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="addNewUser">
       <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/addNewUser" message="tns:DongleServiceContract_addNewUser_InputMessage" />
@@ -90,6 +96,10 @@
     <wsdl:operation name="sendSMS">
       <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/sendSMS" message="tns:DongleServiceContract_sendSMS_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/sendSMSResponse" message="tns:DongleServiceContract_sendSMS_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="setComId">
+      <wsdl:input wsaw:Action="http://tempuri.org/DongleServiceContract/setComId" message="tns:DongleServiceContract_setComId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/DongleServiceContract/setComIdResponse" message="tns:DongleServiceContract_setComId_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_DongleServiceContract" type="tns:DongleServiceContract">
@@ -105,8 +115,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getSMS">
-      <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/getSMS" style="document" />
+    <wsdl:operation name="getIncomingSms">
+      <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/getIncomingSms" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -134,6 +144,15 @@
     </wsdl:operation>
     <wsdl:operation name="sendSMS">
       <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/sendSMS" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setComId">
+      <soap12:operation soapAction="http://tempuri.org/DongleServiceContract/setComId" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

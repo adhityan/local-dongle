@@ -1,6 +1,12 @@
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Release\DongleService.csprojResolveAssemblyReference.cache
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongledb.sdf
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.dll.config
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.pdb
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\GSMCommServer.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\GSMCommShared.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\GSMCommunication.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\PDUConverter.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\System.Data.SqlServerCe.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Release\dongleService.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Release\dongleService.pdb

@@ -18,19 +18,30 @@ namespace LocalDongle
         private List<SMSObject> sms;
         private DongleServiceContractClient client;
 
-        public clientForm(long uid, string url)
+        public static clientForm getInstance(long uid, string url)
+        {
+            try
+            {
+                DongleServiceContractClient client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url));
+                client.Open();
+
+                return new clientForm(uid, client);
+            }
+            catch { return null; }
+        }
+
+        private clientForm(long uid, DongleServiceContractClient client)
         {
             InitializeComponent();
             this.uid = uid;
+            this.client = client;
 
-            client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url));
             init();
         }
 
         public void init()
         {
-            client.Open();
-            sms = client.getSMS(this.uid).ToList();
+            sms = client.getIncomingSms(this.uid).ToList();
 
             if (sms.Count > 0)
             {
@@ -64,10 +75,24 @@ namespace LocalDongle
         {
             try
             {
+                if (phoneTextbox.Text.Length == 0)
+                {
+                    MessageBox.Show("Phone number is mandatory", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                }
+                else if (sendMessageTextbox.Text.Length == 0)
+                {
+                    MessageBox.Show("Message can not be empty", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    return;
+                }
+
                 var response = client.sendSMS(this.uid, phoneTextbox.Text, sendMessageTextbox.Text);
                 if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                else MessageBox.Show("SMS sent!", "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                phoneTextbox.Text = sendMessageTextbox.Text = "";
+                else
+                {
+                    phoneTextbox.Text = sendMessageTextbox.Text = "";
+                    MessageBox.Show("SMS sent!", "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
             catch
             {
@@ -88,6 +113,14 @@ namespace LocalDongle
             catch
             {
                 MessageBox.Show("Server is offline", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void phoneTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                sendMessageButton.PerformClick();
             }
         }
     }

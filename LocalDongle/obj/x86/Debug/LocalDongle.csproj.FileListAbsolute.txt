@@ -15,3 +15,8 @@ C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\ob
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.csproj.GenerateResource.Cache
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.exe
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.pdb
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Debug\LocalDongle.mailboxForm.resources
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\GSMCommunication.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\PDUConverter.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\GSMCommShared.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Debug\GSMCommServer.dll

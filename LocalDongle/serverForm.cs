@@ -25,13 +25,23 @@ namespace LocalDongle
 
         private List<KeyValuePair<long, string>> mapped;
         private List<KeyValuePair<long, string>> unMapped;
+        private DongleService.DongleService dongleService;
 
-        public serverForm()
+        public static serverForm getInstance(ushort comId)
+        {
+            try
+            {
+                return new serverForm(comId);
+            }
+            catch { return null; }
+        }
+
+        private serverForm(ushort comId)
         {
             InitializeComponent();
             database = DongleData.Instance;
 
-            initServer();
+            initServer(comId);
             initGroups();
             initUsers();
             initPendingUsers();
@@ -68,6 +78,8 @@ namespace LocalDongle
             }
             else
             {
+                dongleService.stopServer();
+            
                 host.Close();
                 notifyIcon.Visible = false;
             }
@@ -84,10 +96,12 @@ namespace LocalDongle
             this.Show();
         }
 
-        private void initServer()
+        private void initServer(ushort comId)
         {
+            dongleService = new DongleService.DongleService(comId);
             Uri baseAddress = new Uri("net.tcp://localhost:9090/DongleService");
-            host = new ServiceHost(typeof(DongleService.DongleService), baseAddress);
+            host = new ServiceHost(dongleService, baseAddress);
+
             host.Open();
         }
 
@@ -445,6 +459,11 @@ namespace LocalDongle
         {
             readPendingUsers();
             ((BindingSource)pendingDropdown.DataSource).ResetBindings(false);
+        }
+
+        private void showMailboxButton_Click(object sender, EventArgs e)
+        {
+            (new mailboxForm()).ShowDialog();
         }
     }
 }
