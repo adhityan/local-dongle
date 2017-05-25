@@ -27,6 +27,7 @@
     <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="d7ea3604-1612-4bb3-97af-1280119a5044" SourceId="1" SourceUrl="net.tcp://localhost:8523/dongleService/mex" />
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="37b5d695-8804-4b02-b2cc-a342efdf6ade" SourceId="1" SourceUrl="net.tcp://localhost:8523/dongleService/mex" />
     <MetadataFile FileName="DongleService.Structs.xsd" MetadataType="Schema" ID="325a0f7c-2ba5-437b-b877-0875bb085cdf" SourceId="1" SourceUrl="net.tcp://localhost:8523/dongleService/mex" />
+    <MetadataFile FileName="System.Collections.Generic.xsd" MetadataType="Schema" ID="ed63abeb-781f-49fb-b12c-ea1b8304c29b" SourceId="1" SourceUrl="net.tcp://localhost:8523/dongleService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

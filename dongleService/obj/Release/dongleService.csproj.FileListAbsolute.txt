@@ -1,4 +1,3 @@
-C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\obj\Release\DongleService.csprojResolveAssemblyReference.cache
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongledb.sdf
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.dll.config
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\dongleService\bin\Release\dongleService.dll

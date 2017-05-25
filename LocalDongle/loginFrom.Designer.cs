@@ -39,10 +39,10 @@
             this.registerButton = new System.Windows.Forms.LinkLabel();
             this.serverpathTextbox = new System.Windows.Forms.TextBox();
             this.serverBox = new System.Windows.Forms.GroupBox();
-            this.startServerButton = new System.Windows.Forms.Button();
+            this.testPortButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.portInputTextbox = new System.Windows.Forms.TextBox();
-            this.testPortButton = new System.Windows.Forms.Button();
+            this.startServerButton = new System.Windows.Forms.Button();
             this.clientBox.SuspendLayout();
             this.serverBox.SuspendLayout();
             this.SuspendLayout();
@@ -158,16 +158,16 @@
             this.serverBox.TabStop = false;
             this.serverBox.Text = "Server";
             // 
-            // startServerButton
+            // testPortButton
             // 
-            this.startServerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.startServerButton.Location = new System.Drawing.Point(78, 54);
-            this.startServerButton.Name = "startServerButton";
-            this.startServerButton.Size = new System.Drawing.Size(230, 32);
-            this.startServerButton.TabIndex = 0;
-            this.startServerButton.Text = "Start Server";
-            this.startServerButton.UseVisualStyleBackColor = true;
-            this.startServerButton.Click += new System.EventHandler(this.startServerButton_Click);
+            this.testPortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.testPortButton.Location = new System.Drawing.Point(13, 54);
+            this.testPortButton.Name = "testPortButton";
+            this.testPortButton.Size = new System.Drawing.Size(56, 32);
+            this.testPortButton.TabIndex = 16;
+            this.testPortButton.Text = "Test";
+            this.testPortButton.UseVisualStyleBackColor = true;
+            this.testPortButton.Click += new System.EventHandler(this.testPortButton_Click);
             // 
             // label4
             // 
@@ -187,17 +187,18 @@
             this.portInputTextbox.Name = "portInputTextbox";
             this.portInputTextbox.Size = new System.Drawing.Size(230, 22);
             this.portInputTextbox.TabIndex = 14;
+            this.portInputTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.portInputTextbox_KeyDown);
             // 
-            // testPortButton
+            // startServerButton
             // 
-            this.testPortButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.testPortButton.Location = new System.Drawing.Point(13, 54);
-            this.testPortButton.Name = "testPortButton";
-            this.testPortButton.Size = new System.Drawing.Size(56, 32);
-            this.testPortButton.TabIndex = 16;
-            this.testPortButton.Text = "Test";
-            this.testPortButton.UseVisualStyleBackColor = true;
-            this.testPortButton.Click += new System.EventHandler(this.testPortButton_Click);
+            this.startServerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.startServerButton.Location = new System.Drawing.Point(78, 54);
+            this.startServerButton.Name = "startServerButton";
+            this.startServerButton.Size = new System.Drawing.Size(230, 32);
+            this.startServerButton.TabIndex = 0;
+            this.startServerButton.Text = "Start Server";
+            this.startServerButton.UseVisualStyleBackColor = true;
+            this.startServerButton.Click += new System.EventHandler(this.startServerButton_Click);
             // 
             // loginFrom
             // 

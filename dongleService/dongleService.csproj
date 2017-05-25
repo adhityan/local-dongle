@@ -64,9 +64,11 @@
     <Compile Include="DongleServiceContract.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DongleService.cs" />
+    <Compile Include="Structs\UserObject.cs" />
     <Compile Include="Structs\ExecuteResponse.cs" />
     <Compile Include="Structs\LoginResponse.cs" />
     <Compile Include="Structs\SMSObject.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

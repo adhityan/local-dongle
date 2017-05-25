@@ -18,9 +18,6 @@ namespace LocalDongle.DongleServer {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/login", ReplyAction="http://tempuri.org/DongleServiceContract/loginResponse")]
         DongleService.Structs.LoginResponse login(string username, string password);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/getIncomingSms", ReplyAction="http://tempuri.org/DongleServiceContract/getIncomingSmsResponse")]
-        DongleService.Structs.SMSObject[] getIncomingSms(long uid);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/addNewUser", ReplyAction="http://tempuri.org/DongleServiceContract/addNewUserResponse")]
         DongleService.Structs.ExecuteResponse addNewUser(string username, string password, string phone, string name, string email);
         
@@ -30,8 +27,14 @@ namespace LocalDongle.DongleServer {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/sendSMS", ReplyAction="http://tempuri.org/DongleServiceContract/sendSMSResponse")]
         DongleService.Structs.ExecuteResponse sendSMS(long senderId, string to, string messsage);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/setComId", ReplyAction="http://tempuri.org/DongleServiceContract/setComIdResponse")]
-        bool setComId(ushort comId);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/sendGroupSMS", ReplyAction="http://tempuri.org/DongleServiceContract/sendGroupSMSResponse")]
+        DongleService.Structs.ExecuteResponse sendGroupSMS(long senderId, long groupId, string messsage);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/getAllGroups", ReplyAction="http://tempuri.org/DongleServiceContract/getAllGroupsResponse")]
+        System.Collections.Generic.KeyValuePair<long, string>[] getAllGroups();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/getUserInfo", ReplyAction="http://tempuri.org/DongleServiceContract/getUserInfoResponse")]
+        DongleService.Structs.UserObject getUserInfo(long id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -65,10 +68,6 @@ namespace LocalDongle.DongleServer {
             return base.Channel.login(username, password);
         }
         
-        public DongleService.Structs.SMSObject[] getIncomingSms(long uid) {
-            return base.Channel.getIncomingSms(uid);
-        }
-        
         public DongleService.Structs.ExecuteResponse addNewUser(string username, string password, string phone, string name, string email) {
             return base.Channel.addNewUser(username, password, phone, name, email);
         }
@@ -81,8 +80,16 @@ namespace LocalDongle.DongleServer {
             return base.Channel.sendSMS(senderId, to, messsage);
         }
         
-        public bool setComId(ushort comId) {
-            return base.Channel.setComId(comId);
+        public DongleService.Structs.ExecuteResponse sendGroupSMS(long senderId, long groupId, string messsage) {
+            return base.Channel.sendGroupSMS(senderId, groupId, messsage);
+        }
+        
+        public System.Collections.Generic.KeyValuePair<long, string>[] getAllGroups() {
+            return base.Channel.getAllGroups();
+        }
+        
+        public DongleService.Structs.UserObject getUserInfo(long id) {
+            return base.Channel.getUserInfo(id);
         }
     }
 }

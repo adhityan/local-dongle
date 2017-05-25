@@ -168,6 +168,7 @@
     <None Include="Properties\DataSources\DongleService.Structs.ExecuteResponse.datasource" />
     <None Include="Properties\DataSources\DongleService.Structs.LoginResponse.datasource" />
     <None Include="Properties\DataSources\DongleService.Structs.SMSObject.datasource" />
+    <None Include="Properties\DataSources\DongleService.Structs.UserObject.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -185,6 +186,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DongleServer\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DongleServer\System.Collections.Generic.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

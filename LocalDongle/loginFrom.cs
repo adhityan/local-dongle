@@ -164,5 +164,13 @@ namespace LocalDongle
             }
             else MessageBox.Show("COM ID Entered does not look valid", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        private void portInputTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                startServerButton.PerformClick();
+            }
+        }
     }
 }

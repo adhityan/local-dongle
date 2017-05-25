@@ -15,8 +15,9 @@ namespace LocalDongle
     public partial class clientForm : Form
     {
         private long uid;
-        private List<SMSObject> sms;
+        private UserObject user;
         private DongleServiceContractClient client;
+        private List<KeyValuePair<long, string>> groups;
 
         public static clientForm getInstance(long uid, string url)
         {
@@ -41,25 +42,24 @@ namespace LocalDongle
 
         public void init()
         {
-            sms = client.getIncomingSms(this.uid).ToList();
-
-            if (sms.Count > 0)
-            {
-                smsList.DataSource = sms.Select(p => p.from).ToArray();
-                smsAvailablePanel.Visible = true;
-                noSmsAvailablePanel.Visible = false;
-            }
-            else
-            {
-                smsAvailablePanel.Visible = false;
-                noSmsAvailablePanel.Visible = true;
-            }
+            initUserInfo();
+            initGroups();
         }
 
-        private void smsList_SelectedIndexChanged(object sender, EventArgs e)
+        private void initGroups()
         {
-            SMSObject select = sms[smsList.SelectedIndex];
-            smsView.Text = select.content;
+            groups = client.getAllGroups().ToList();
+
+            groupCombobox.DisplayMember = "Value";
+            groupCombobox.ValueMember = "Key";
+            groupCombobox.DataSource = new BindingSource(groups, null);
+        }
+
+        private void initUserInfo()
+        {
+            this.user = client.getUserInfo(this.uid);
+            phoneLabel.Text = this.user.phone;
+            nameLabel.Text = this.user.name;
         }
 
         private void clientForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -73,25 +73,41 @@ namespace LocalDongle
 
         private void sendMessageButton_Click(object sender, EventArgs e)
         {
+            if (sendMessageTextbox.Text.Length == 0)
+            {
+                MessageBox.Show("Message can not be empty", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+
             try
             {
-                if (phoneTextbox.Text.Length == 0)
+                if (toGroupRadio.Checked)
                 {
-                    MessageBox.Show("Phone number is mandatory", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    return;
-                }
-                else if (sendMessageTextbox.Text.Length == 0)
-                {
-                    MessageBox.Show("Message can not be empty", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    return;
-                }
+                    long gid = (long)groupCombobox.SelectedValue;
 
-                var response = client.sendSMS(this.uid, phoneTextbox.Text, sendMessageTextbox.Text);
-                if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    var response = client.sendGroupSMS(this.uid, gid, sendMessageTextbox.Text);
+                    if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                    {
+                        phoneTextbox.Text = sendMessageTextbox.Text = "";
+                        MessageBox.Show("SMS sent!", "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
                 else
                 {
-                    phoneTextbox.Text = sendMessageTextbox.Text = "";
-                    MessageBox.Show("SMS sent!", "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    if (phoneTextbox.Text.Length == 0)
+                    {
+                        MessageBox.Show("Phone number is mandatory", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                        return;
+                    }
+
+                    var response = client.sendSMS(this.uid, phoneTextbox.Text, sendMessageTextbox.Text);
+                    if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                    {
+                        phoneTextbox.Text = sendMessageTextbox.Text = "";
+                        MessageBox.Show("SMS sent!", "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
                 }
             }
             catch
@@ -122,6 +138,12 @@ namespace LocalDongle
             {
                 sendMessageButton.PerformClick();
             }
+        }
+
+        private void toPhoneRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            if (toGroupRadio.Checked) groupCombobox.Visible = true;
+            else groupCombobox.Visible = false;
         }
     }
 }

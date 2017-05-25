@@ -8,13 +8,14 @@ using System.Text;
 using System.Windows.Forms;
 using DongleService;
 using System.Data.SqlServerCe;
+using GsmComm.GsmCommunication;
 
 namespace LocalDongle
 {
     public partial class mailboxForm : Form
     {
         private DongleData database;
-        private List<dynamic> display;
+        private List<dynamic> display; 
 
         public mailboxForm()
         {
@@ -28,6 +29,8 @@ namespace LocalDongle
             display = new List<dynamic>();
             mailGrid.DataSource = new BindingSource(new BindingList<dynamic>(display), null);
             loadCorrectData();
+
+            updateTimer.Enabled = true;
         }
 
         private void loadCorrectData()
@@ -52,7 +55,15 @@ namespace LocalDongle
 
         private void loadReceivedData()
         {
+            SqlCeCommand command = new SqlCeCommand("select sender, message from sms_received");
+            var result = DongleData.Instance.runTableQuery(command);
+
             display.Clear();
+            while (result.Read())
+            {
+                display.Add(new { To = result.GetString(0), Message = result.GetString(1) });
+            }
+
             ((BindingSource)mailGrid.DataSource).ResetBindings(false);
         }
 
@@ -62,6 +73,11 @@ namespace LocalDongle
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            loadCorrectData();
+        }
+
+        private void updateTimer_Tick(object sender, EventArgs e)
         {
             loadCorrectData();
         }

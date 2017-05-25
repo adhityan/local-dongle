@@ -14,34 +14,12 @@ namespace DongleService
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class DongleService : DongleServiceContract
     {
-        private ushort comId;
         private GsmCommMain comm;
 
-        private bool isComSet
+        public DongleService() : this(null) { }
+        public DongleService(GsmCommMain comm)
         {
-            get
-            {
-                if (this.comId > 0) return true;
-                else return false;
-            }
-        }
-
-        public DongleService() : this(0) { }
-        public DongleService(ushort comId)
-        {
-            this.comId = comId;
-            this.comm = new GsmCommMain(this.comId, 460800, 1000);
-
-            if (this.isComSet) comm.Open();
-        }
-
-        public void stopServer()
-        {
-            if (comm.IsOpen())
-            {
-                comm.Close();
-                this.comId = 0;
-            }
+            this.comm = comm;
         }
 
         public LoginResponse login(string username, string password)
@@ -53,12 +31,6 @@ namespace DongleService
             var result = DongleData.Instance.runScalarQuery(command);
             if(result != null) return new LoginResponse((long)result);
             else return new LoginResponse();
-        }
-
-        public SMSObject[] getIncomingSms(long uid)
-        {
-            List<SMSObject> sms = new List<SMSObject>();
-            return sms.ToArray();
         }
 
         public ExecuteResponse addNewUser(string username, string password, string phone, string name, string email)
@@ -97,8 +69,6 @@ namespace DongleService
 
         public ExecuteResponse sendSMS(long senderId, string recepiant, string messsage)
         {
-            if (!this.isComSet) return new ExecuteResponse("COM not set. Please restart the server.");
-
             try
             {
                 if (recepiant.Length != 10) return new ExecuteResponse("Invalid phone number. Check again!");
@@ -116,6 +86,84 @@ namespace DongleService
                 else return new ExecuteResponse("Message could not be sent");
             }
             catch { return new ExecuteResponse("Message could not be sent"); }
+        }
+
+        public ExecuteResponse sendGroupSMS(long senderId, long groupId, string messsage)
+        {
+            try
+            {
+                if (messsage.Length == 0) return new ExecuteResponse("No message content!");
+
+                SqlCeCommand command = new SqlCeCommand("select user_id from users_groups where group_id = @gid");
+                command.Parameters.AddWithValue("@gid", groupId.ToString());
+
+                var groups = new List<long>();
+                var reader = DongleData.Instance.runTableQuery(command);
+                while (reader.Read())
+                {
+                    groups.Add((long)reader[0]);
+                }
+                reader.Close();
+
+                var commandSql = "select phone from users where id in ({0})";
+                commandSql = string.Format(commandSql, Util.implodeToString(groups.Cast<object>().ToList()));
+
+                var recepiants = new List<string>();
+                reader = DongleData.Instance.runTableQuery(commandSql);
+                while (reader.Read())
+                {
+                    recepiants.Add((string)reader[0]);
+                }
+                reader.Close();
+
+                bool allOK = true;
+                foreach (var recepiant in recepiants)
+                {
+                    comm.SendMessage(new SmsSubmitPdu(messsage, recepiant));
+
+                    command = new SqlCeCommand("insert into sms_sent(sender_id, recepiant, message) values(@sender_id, @recepiant, @message)");
+                    command.Parameters.AddWithValue("@sender_id", senderId.ToString());
+                    command.Parameters.AddWithValue("@recepiant", recepiant);
+                    command.Parameters.AddWithValue("@message", messsage);
+
+                    var result = DongleData.Instance.runExecQuery(command);
+                    if (result == 0) allOK = false;
+                }
+
+                if(allOK) return new ExecuteResponse();
+                else return new ExecuteResponse("Some messages could not be sent.");
+            }
+            catch { return new ExecuteResponse("Message could not be sent"); }
+        }
+
+        public List<KeyValuePair<long, string>> getAllGroups()
+        {
+            var groups = new List<KeyValuePair<long, string>>();
+
+            var reader = DongleData.Instance.runTableQuery("select id, name from groups where enabled = 1");
+            while (reader.Read())
+            {
+                groups.Add(new KeyValuePair<long, string>((long)reader[0], (string)reader[1]));
+            }
+            reader.Close();
+
+            return groups;
+        }
+
+        public UserObject getUserInfo(long id)
+        {
+            UserObject response = null;
+            SqlCeCommand command = new SqlCeCommand("select id, username, email, name, phone from users where id = @uid");
+            command.Parameters.AddWithValue("@uid", id.ToString());
+
+            var reader = DongleData.Instance.runTableQuery(command);
+            if (reader.Read())
+            {
+                response = new UserObject((long)reader["id"], (string)reader["username"], (string)reader["phone"], (string)reader["email"], (string)reader["name"]);
+            }
+            reader.Close();
+
+            return response;
         }
     }
 }

@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mailboxForm));
             this.mailGrid = new System.Windows.Forms.DataGridView();
             this.incomingRadio = new System.Windows.Forms.RadioButton();
             this.outgoingRadio = new System.Windows.Forms.RadioButton();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.updateTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.mailGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,6 +88,11 @@
             this.linkLabel1.Text = "Refresh";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
+            // updateTimer
+            // 
+            this.updateTimer.Interval = 5000;
+            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            // 
             // mailboxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -117,5 +124,6 @@
         private System.Windows.Forms.RadioButton incomingRadio;
         private System.Windows.Forms.RadioButton outgoingRadio;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Timer updateTimer;
     }
 }

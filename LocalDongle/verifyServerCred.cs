@@ -18,8 +18,8 @@ namespace LocalDongle
         {
             InitializeComponent();
 
-            username = "";
-            password = "";
+            username = "scott";
+            password = "tiger";
         }
 
         private void launchButton_Click(object sender, EventArgs e)

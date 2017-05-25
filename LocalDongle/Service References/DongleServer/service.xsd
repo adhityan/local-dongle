@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://schemas.datacontract.org/2004/07/DongleService.Structs" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
   <xs:element name="login">
     <xs:complexType>
       <xs:sequence>
@@ -13,20 +14,6 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="loginResult" nillable="true" type="q1:LoginResponse" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="getIncomingSms">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="uid" type="xs:long" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="getIncomingSmsResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="getIncomingSmsResult" nillable="true" type="q2:ArrayOfSMSObject" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -44,7 +31,7 @@
   <xs:element name="addNewUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="addNewUserResult" nillable="true" type="q3:ExecuteResponse" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="addNewUserResult" nillable="true" type="q2:ExecuteResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -59,7 +46,7 @@
   <xs:element name="updatePasswordResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="updatePasswordResult" nillable="true" type="q4:ExecuteResponse" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="updatePasswordResult" nillable="true" type="q3:ExecuteResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -75,21 +62,49 @@
   <xs:element name="sendSMSResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="sendSMSResult" nillable="true" type="q5:ExecuteResponse" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="sendSMSResult" nillable="true" type="q4:ExecuteResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="setComId">
+  <xs:element name="sendGroupSMS">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="comId" type="xs:unsignedShort" />
+        <xs:element minOccurs="0" name="senderId" type="xs:long" />
+        <xs:element minOccurs="0" name="groupId" type="xs:long" />
+        <xs:element minOccurs="0" name="messsage" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="setComIdResponse">
+  <xs:element name="sendGroupSMSResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="setComIdResult" type="xs:boolean" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="sendGroupSMSResult" nillable="true" type="q5:ExecuteResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getAllGroups">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getAllGroupsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="getAllGroupsResult" nillable="true" type="q6:ArrayOfKeyValuePairOflongstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getUserInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getUserInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DongleService.Structs" minOccurs="0" name="getUserInfoResult" nillable="true" type="q7:UserObject" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

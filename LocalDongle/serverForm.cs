@@ -10,6 +10,8 @@ using System.ServiceModel;
 using DongleService;
 using System.Data.SqlServerCe;
 using System.Diagnostics;
+using GsmComm.GsmCommunication;
+using GsmComm.PduConverter;
 
 namespace LocalDongle
 {
@@ -18,6 +20,8 @@ namespace LocalDongle
         private ServiceHost host;
         private bool letClose = false;
         private DongleData database;
+        private GsmCommMain comm;
+        private ushort comId;
 
         private List<KeyValuePair<long, string>> users;
         private List<KeyValuePair<long, string>> groups;
@@ -40,12 +44,15 @@ namespace LocalDongle
         {
             InitializeComponent();
             database = DongleData.Instance;
+            this.comId = comId;
 
-            initServer(comId);
+            initCom();
+            initServer();
             initGroups();
             initUsers();
             initPendingUsers();
             initMappings();
+            initMessages();
 
             updateTimer.Enabled = true;
         }
@@ -78,8 +85,8 @@ namespace LocalDongle
             }
             else
             {
-                dongleService.stopServer();
-            
+                if (comm.IsOpen()) comm.Close();
+
                 host.Close();
                 notifyIcon.Visible = false;
             }
@@ -96,9 +103,142 @@ namespace LocalDongle
             this.Show();
         }
 
-        private void initServer(ushort comId)
+        private void initCom()
         {
-            dongleService = new DongleService.DongleService(comId);
+            this.comm = new GsmCommMain(this.comId, 460800, 1000);
+            comm.Open();
+
+            comm.MessageReceived += new MessageReceivedEventHandler(comm_MessageReceived);
+            comm.PhoneDisconnected += new EventHandler(comm_PhoneDisconnected);
+            comm.PhoneConnected += new EventHandler(comm_PhoneConnected);
+        }
+
+        void comm_PhoneDisconnected(object sender, EventArgs e)
+        {
+            
+        }
+
+        void comm_PhoneConnected(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void initMessages()
+        {
+            processAllUnreadMessages();
+        }
+
+        private void processAllUnreadMessages()
+        {
+            try
+            {
+                var sim_messages = comm.ReadMessages(PhoneMessageStatus.All, PhoneStorageType.Sim);
+                var phone_messages = comm.ReadMessages(PhoneMessageStatus.All, PhoneStorageType.Phone);
+                var messages = sim_messages.Union(phone_messages).ToArray();
+
+                foreach (DecodedShortMessage message in messages)
+                {
+                    if (message.Data is SmsDeliverPdu)
+                    {
+                        SmsDeliverPdu data = (SmsDeliverPdu)message.Data;
+                        var timestamp = data.SCTimestamp.ToDateTime();
+                        var phoneNumber = data.OriginatingAddress;
+                        var text = data.UserDataText;
+
+                        if (phoneNumber.Contains("+91")) phoneNumber = phoneNumber.Replace("+91", "");
+                        SqlCeCommand command = new SqlCeCommand("insert into sms_received(sender, message, timestamp) values(@sender, @message, @timestamp)");
+                        command.Parameters.AddWithValue("@timestamp", timestamp);
+                        command.Parameters.AddWithValue("@sender", phoneNumber);
+                        command.Parameters.AddWithValue("@message", text);
+                        DongleData.Instance.runExecQuery(command);
+
+                        processIncomingTriggers(phoneNumber, text);
+                    }
+                }
+            }
+            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); }
+        }
+
+        void comm_MessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            try
+            {
+                if (e.IndicationObject is MemoryLocation)
+                {
+                    MemoryLocation location = (MemoryLocation)e.IndicationObject;
+                    var message = comm.ReadMessage(location.Index, location.Storage);
+
+                    if (message.Data is SmsDeliverPdu)
+                    {
+                        SmsDeliverPdu data = (SmsDeliverPdu)message.Data;
+                        var timestamp = data.SCTimestamp.ToDateTime();
+                        var phoneNumber = data.OriginatingAddress;
+                        var text = data.UserDataText;
+
+                        if (phoneNumber.Contains("+91")) phoneNumber = phoneNumber.Replace("+91", "");
+                        SqlCeCommand command = new SqlCeCommand("insert into sms_received(sender, message, timestamp) values(@sender, @message, @timestamp)");
+                        command.Parameters.AddWithValue("@timestamp", timestamp);
+                        command.Parameters.AddWithValue("@sender", phoneNumber);
+                        command.Parameters.AddWithValue("@message", text);
+                        DongleData.Instance.runExecQuery(command);
+
+                        processIncomingTriggers(phoneNumber, text);
+                    }
+                }
+                else if (e.IndicationObject is ShortMessage)
+                {
+                    var message = (ShortMessage)e.IndicationObject;
+                    var data = (SmsDeliverPdu)comm.DecodeReceivedMessage(message);
+
+                    var timestamp = data.SCTimestamp.ToDateTime();
+                    var phoneNumber = data.OriginatingAddress;
+                    var text = data.UserDataText;
+
+                    if (phoneNumber.Contains("+91")) phoneNumber = phoneNumber.Replace("+91", "");
+                    SqlCeCommand command = new SqlCeCommand("insert into sms_received(sender, message, timestamp) values(@sender, @message, @timestamp)");
+                    command.Parameters.AddWithValue("@timestamp", timestamp);
+                    command.Parameters.AddWithValue("@sender", phoneNumber);
+                    command.Parameters.AddWithValue("@message", text);
+                    DongleData.Instance.runExecQuery(command);
+
+                    processIncomingTriggers(phoneNumber, text);
+                }
+            }
+            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); }
+        }
+
+        private void processIncomingTriggers(string sender, string message)
+        {
+            if (message.ToUpper().StartsWith("REG "))
+            {
+                var parts = message.Split(new char[] { ' ' });
+                if (parts.Length < 2) return;
+
+                string username = parts[1];
+                string name = username;
+                if (parts.Length > 2) name = parts[2];
+
+                SqlCeCommand command = new SqlCeCommand("insert into users(username, password, phone, name, enabled) values(@username, @password, @phone, @name, 0)");
+                command.Parameters.AddWithValue("@username", username);
+                command.Parameters.AddWithValue("@password", username);
+                command.Parameters.AddWithValue("@name", username);
+                command.Parameters.AddWithValue("@phone", sender);
+
+                int result = 0;
+                try
+                {
+                    result = DongleData.Instance.runExecQuery(command);
+                }
+                catch { }
+
+                if (result != 0) comm.SendMessage(new SmsSubmitPdu(string.Format("Registration request accepted for {0}", username), sender));
+                else comm.SendMessage(new SmsSubmitPdu(string.Format("Username: {0} or phone number: {1} is already registered", username, sender), sender));
+            }
+        }
+
+        private void initServer()
+        {
+            dongleService = new DongleService.DongleService(this.comm);
             Uri baseAddress = new Uri("net.tcp://localhost:9090/DongleService");
             host = new ServiceHost(dongleService, baseAddress);
 

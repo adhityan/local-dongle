@@ -15,9 +15,6 @@ namespace DongleService
         LoginResponse login(string username, string password);
 
         [OperationContract]
-        SMSObject[] getIncomingSms(long uid);
-
-        [OperationContract]
         ExecuteResponse addNewUser(string username, string password, string phone, string name, string email);
 
         [OperationContract]
@@ -25,5 +22,14 @@ namespace DongleService
 
         [OperationContract]
         ExecuteResponse sendSMS(long senderId, string to, string messsage);
+
+        [OperationContract]
+        ExecuteResponse sendGroupSMS(long senderId, long groupId, string messsage);
+
+        [OperationContract]
+        List<KeyValuePair<long, string>> getAllGroups();
+
+        [OperationContract]
+        UserObject getUserInfo(long id);
     }
 }
