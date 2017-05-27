@@ -29,6 +29,7 @@ namespace LocalDongle
             
             if (args.Contains("startserver"))
             {
+                if (args.Length > 2) portInputTextbox.Text = args[2];
                 gotoServerForm();
             }
         }
@@ -89,7 +90,6 @@ namespace LocalDongle
                                 form.Closed += (s, args) => this.Close();
                                 form.Show();
                             }
-                            else MessageBox.Show(string.Format("Could not connect to dongle at COM{0}", comId), "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     else MessageBox.Show("COM ID Entered does not look valid", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -100,7 +100,7 @@ namespace LocalDongle
             {
                 try
                 {
-                    var info = new ProcessStartInfo(Assembly.GetEntryAssembly().Location, "startServer")
+                    var info = new ProcessStartInfo(Assembly.GetEntryAssembly().Location, string.Format("startServer {0}", portInputTextbox.Text))
                     {
                         Verb = "runas", // indicates to elevate privileges
                     };

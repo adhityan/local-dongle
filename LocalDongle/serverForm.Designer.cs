@@ -148,7 +148,6 @@
             this.notifyIcon.ContextMenuStrip = this.notifyMenuStrip;
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "Local Dongle Server";
-            this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // notifyMenuStrip
@@ -190,7 +189,7 @@
             this.groupAddTextbox.Location = new System.Drawing.Point(81, 30);
             this.groupAddTextbox.Name = "groupAddTextbox";
             this.groupAddTextbox.Size = new System.Drawing.Size(183, 24);
-            this.groupAddTextbox.TabIndex = 4;
+            this.groupAddTextbox.TabIndex = 17;
             this.groupAddTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.groupAddTextbox_KeyDown);
             // 
             // groupDeleteButton
@@ -200,7 +199,7 @@
             this.groupDeleteButton.Location = new System.Drawing.Point(15, 27);
             this.groupDeleteButton.Name = "groupDeleteButton";
             this.groupDeleteButton.Size = new System.Drawing.Size(264, 67);
-            this.groupDeleteButton.TabIndex = 3;
+            this.groupDeleteButton.TabIndex = 21;
             this.groupDeleteButton.Text = "Delete Group(s)";
             this.groupDeleteButton.UseVisualStyleBackColor = true;
             this.groupDeleteButton.Click += new System.EventHandler(this.groupDeleteButton_Click);
@@ -213,7 +212,7 @@
             this.rejectPendingUserButton.Location = new System.Drawing.Point(151, 103);
             this.rejectPendingUserButton.Name = "rejectPendingUserButton";
             this.rejectPendingUserButton.Size = new System.Drawing.Size(138, 26);
-            this.rejectPendingUserButton.TabIndex = 15;
+            this.rejectPendingUserButton.TabIndex = 36;
             this.rejectPendingUserButton.Text = "-";
             this.rejectPendingUserButton.UseVisualStyleBackColor = true;
             this.rejectPendingUserButton.Click += new System.EventHandler(this.rejectPendingUserButton_Click);
@@ -226,7 +225,7 @@
             this.approvePendingUserButton.Location = new System.Drawing.Point(7, 103);
             this.approvePendingUserButton.Name = "approvePendingUserButton";
             this.approvePendingUserButton.Size = new System.Drawing.Size(138, 26);
-            this.approvePendingUserButton.TabIndex = 14;
+            this.approvePendingUserButton.TabIndex = 35;
             this.approvePendingUserButton.Text = "+";
             this.approvePendingUserButton.UseVisualStyleBackColor = true;
             this.approvePendingUserButton.Click += new System.EventHandler(this.approvePendingUserButton_Click);
@@ -250,7 +249,7 @@
             this.resetPasswordButton.Location = new System.Drawing.Point(6, 20);
             this.resetPasswordButton.Name = "resetPasswordButton";
             this.resetPasswordButton.Size = new System.Drawing.Size(97, 13);
-            this.resetPasswordButton.TabIndex = 17;
+            this.resetPasswordButton.TabIndex = 32;
             this.resetPasswordButton.TabStop = true;
             this.resetPasswordButton.Text = "Reset password";
             this.resetPasswordButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.resetPasswordButton_LinkClicked);
@@ -268,7 +267,7 @@
             this.alreadyMappedList.MaxDropDownItems = 7;
             this.alreadyMappedList.Name = "alreadyMappedList";
             this.alreadyMappedList.Size = new System.Drawing.Size(200, 26);
-            this.alreadyMappedList.TabIndex = 11;
+            this.alreadyMappedList.TabIndex = 12;
             // 
             // unMapButton
             // 
@@ -277,7 +276,7 @@
             this.unMapButton.Location = new System.Drawing.Point(217, 90);
             this.unMapButton.Name = "unMapButton";
             this.unMapButton.Size = new System.Drawing.Size(75, 26);
-            this.unMapButton.TabIndex = 12;
+            this.unMapButton.TabIndex = 13;
             this.unMapButton.Text = "Remove";
             this.unMapButton.UseVisualStyleBackColor = true;
             this.unMapButton.Click += new System.EventHandler(this.unMapButton_Click);
@@ -296,7 +295,7 @@
             this.notMappedList.MaxDropDownItems = 7;
             this.notMappedList.Name = "notMappedList";
             this.notMappedList.Size = new System.Drawing.Size(200, 26);
-            this.notMappedList.TabIndex = 9;
+            this.notMappedList.TabIndex = 10;
             // 
             // mapButton
             // 
@@ -305,7 +304,7 @@
             this.mapButton.Location = new System.Drawing.Point(216, 40);
             this.mapButton.Name = "mapButton";
             this.mapButton.Size = new System.Drawing.Size(75, 26);
-            this.mapButton.TabIndex = 10;
+            this.mapButton.TabIndex = 11;
             this.mapButton.Text = "Map";
             this.mapButton.UseVisualStyleBackColor = true;
             this.mapButton.Click += new System.EventHandler(this.mapButton_Click);
@@ -317,7 +316,7 @@
             this.pendingList.Location = new System.Drawing.Point(7, 19);
             this.pendingList.Name = "pendingList";
             this.pendingList.Size = new System.Drawing.Size(300, 78);
-            this.pendingList.TabIndex = 6;
+            this.pendingList.TabIndex = 34;
             // 
             // stopServerButton
             // 
@@ -327,7 +326,7 @@
             this.stopServerButton.Location = new System.Drawing.Point(759, 12);
             this.stopServerButton.Name = "stopServerButton";
             this.stopServerButton.Size = new System.Drawing.Size(108, 41);
-            this.stopServerButton.TabIndex = 18;
+            this.stopServerButton.TabIndex = 37;
             this.stopServerButton.Text = "Stop server";
             this.stopServerButton.UseVisualStyleBackColor = false;
             this.stopServerButton.Click += new System.EventHandler(this.stopServerButton_Click);
@@ -347,7 +346,7 @@
             this.tabbityTab.Name = "tabbityTab";
             this.tabbityTab.SelectedIndex = 0;
             this.tabbityTab.Size = new System.Drawing.Size(871, 613);
-            this.tabbityTab.TabIndex = 20;
+            this.tabbityTab.TabIndex = 15;
             // 
             // membersTab
             // 
@@ -389,7 +388,7 @@
             this.contactsGrid.ShowEditingIcon = false;
             this.contactsGrid.ShowRowErrors = false;
             this.contactsGrid.Size = new System.Drawing.Size(864, 404);
-            this.contactsGrid.TabIndex = 21;
+            this.contactsGrid.TabIndex = 14;
             this.contactsGrid.SelectionChanged += new System.EventHandler(this.contactsGrid_SelectionChanged);
             // 
             // editMappingsGroup
@@ -444,7 +443,7 @@
             this.deleteContactButton.Location = new System.Drawing.Point(6, 151);
             this.deleteContactButton.Name = "deleteContactButton";
             this.deleteContactButton.Size = new System.Drawing.Size(44, 13);
-            this.deleteContactButton.TabIndex = 19;
+            this.deleteContactButton.TabIndex = 9;
             this.deleteContactButton.TabStop = true;
             this.deleteContactButton.Text = "Delete";
             this.deleteContactButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.deleteContactButton_LinkClicked);
@@ -456,7 +455,7 @@
             this.contactNameEditTextbox.Location = new System.Drawing.Point(81, 30);
             this.contactNameEditTextbox.Name = "contactNameEditTextbox";
             this.contactNameEditTextbox.Size = new System.Drawing.Size(183, 24);
-            this.contactNameEditTextbox.TabIndex = 9;
+            this.contactNameEditTextbox.TabIndex = 5;
             // 
             // contactPhoneEditTextbox
             // 
@@ -465,7 +464,7 @@
             this.contactPhoneEditTextbox.Location = new System.Drawing.Point(81, 60);
             this.contactPhoneEditTextbox.Name = "contactPhoneEditTextbox";
             this.contactPhoneEditTextbox.Size = new System.Drawing.Size(183, 24);
-            this.contactPhoneEditTextbox.TabIndex = 8;
+            this.contactPhoneEditTextbox.TabIndex = 6;
             // 
             // contactEditButton
             // 
@@ -474,7 +473,7 @@
             this.contactEditButton.Location = new System.Drawing.Point(167, 129);
             this.contactEditButton.Name = "contactEditButton";
             this.contactEditButton.Size = new System.Drawing.Size(97, 39);
-            this.contactEditButton.TabIndex = 7;
+            this.contactEditButton.TabIndex = 8;
             this.contactEditButton.Text = "Update";
             this.contactEditButton.UseVisualStyleBackColor = true;
             this.contactEditButton.Click += new System.EventHandler(this.contactEditButton_Click);
@@ -486,7 +485,7 @@
             this.contactDesignationEditTextbox.Location = new System.Drawing.Point(81, 90);
             this.contactDesignationEditTextbox.Name = "contactDesignationEditTextbox";
             this.contactDesignationEditTextbox.Size = new System.Drawing.Size(183, 24);
-            this.contactDesignationEditTextbox.TabIndex = 6;
+            this.contactDesignationEditTextbox.TabIndex = 7;
             // 
             // label5
             // 
@@ -538,7 +537,7 @@
             this.contactNameAddTextbox.Location = new System.Drawing.Point(81, 30);
             this.contactNameAddTextbox.Name = "contactNameAddTextbox";
             this.contactNameAddTextbox.Size = new System.Drawing.Size(183, 24);
-            this.contactNameAddTextbox.TabIndex = 9;
+            this.contactNameAddTextbox.TabIndex = 1;
             // 
             // contactPhoneAddTextbox
             // 
@@ -547,7 +546,7 @@
             this.contactPhoneAddTextbox.Location = new System.Drawing.Point(81, 60);
             this.contactPhoneAddTextbox.Name = "contactPhoneAddTextbox";
             this.contactPhoneAddTextbox.Size = new System.Drawing.Size(183, 24);
-            this.contactPhoneAddTextbox.TabIndex = 8;
+            this.contactPhoneAddTextbox.TabIndex = 2;
             // 
             // contactAddButton
             // 
@@ -556,7 +555,7 @@
             this.contactAddButton.Location = new System.Drawing.Point(167, 129);
             this.contactAddButton.Name = "contactAddButton";
             this.contactAddButton.Size = new System.Drawing.Size(97, 39);
-            this.contactAddButton.TabIndex = 7;
+            this.contactAddButton.TabIndex = 4;
             this.contactAddButton.Text = "Add";
             this.contactAddButton.UseVisualStyleBackColor = true;
             this.contactAddButton.Click += new System.EventHandler(this.contactAddButton_Click);
@@ -568,7 +567,7 @@
             this.contactDesignationAddTextbox.Location = new System.Drawing.Point(81, 90);
             this.contactDesignationAddTextbox.Name = "contactDesignationAddTextbox";
             this.contactDesignationAddTextbox.Size = new System.Drawing.Size(183, 24);
-            this.contactDesignationAddTextbox.TabIndex = 6;
+            this.contactDesignationAddTextbox.TabIndex = 3;
             // 
             // label9
             // 
@@ -636,7 +635,7 @@
             this.groupsGrid.ShowEditingIcon = false;
             this.groupsGrid.ShowRowErrors = false;
             this.groupsGrid.Size = new System.Drawing.Size(864, 466);
-            this.groupsGrid.TabIndex = 20;
+            this.groupsGrid.TabIndex = 16;
             this.groupsGrid.SelectionChanged += new System.EventHandler(this.groupsGrid_SelectionChanged);
             // 
             // deleteGroupBox
@@ -670,7 +669,7 @@
             this.groupEditButton.Location = new System.Drawing.Point(167, 64);
             this.groupEditButton.Name = "groupEditButton";
             this.groupEditButton.Size = new System.Drawing.Size(97, 39);
-            this.groupEditButton.TabIndex = 14;
+            this.groupEditButton.TabIndex = 20;
             this.groupEditButton.Text = "Update";
             this.groupEditButton.UseVisualStyleBackColor = true;
             this.groupEditButton.Click += new System.EventHandler(this.groupEditButton_Click);
@@ -692,7 +691,7 @@
             this.groupEditTextbox.Location = new System.Drawing.Point(81, 30);
             this.groupEditTextbox.Name = "groupEditTextbox";
             this.groupEditTextbox.Size = new System.Drawing.Size(183, 24);
-            this.groupEditTextbox.TabIndex = 4;
+            this.groupEditTextbox.TabIndex = 19;
             // 
             // groupBox4
             // 
@@ -713,7 +712,7 @@
             this.groupAddButton.Location = new System.Drawing.Point(167, 64);
             this.groupAddButton.Name = "groupAddButton";
             this.groupAddButton.Size = new System.Drawing.Size(97, 39);
-            this.groupAddButton.TabIndex = 14;
+            this.groupAddButton.TabIndex = 18;
             this.groupAddButton.Text = "Add";
             this.groupAddButton.UseVisualStyleBackColor = true;
             this.groupAddButton.Click += new System.EventHandler(this.groupAddButton_Click);
@@ -762,7 +761,7 @@
             this.filterEndDatepicker.Name = "filterEndDatepicker";
             this.filterEndDatepicker.ShowCheckBox = true;
             this.filterEndDatepicker.Size = new System.Drawing.Size(200, 20);
-            this.filterEndDatepicker.TabIndex = 11;
+            this.filterEndDatepicker.TabIndex = 26;
             this.filterEndDatepicker.ValueChanged += new System.EventHandler(this.filterEndDatepicker_ValueChanged);
             // 
             // filterStartDatepicker
@@ -775,7 +774,7 @@
             this.filterStartDatepicker.Name = "filterStartDatepicker";
             this.filterStartDatepicker.ShowCheckBox = true;
             this.filterStartDatepicker.Size = new System.Drawing.Size(200, 20);
-            this.filterStartDatepicker.TabIndex = 9;
+            this.filterStartDatepicker.TabIndex = 25;
             this.filterStartDatepicker.ValueChanged += new System.EventHandler(this.filterStartDatepicker_ValueChanged);
             // 
             // mailGrid
@@ -804,7 +803,7 @@
             this.mailGrid.ShowEditingIcon = false;
             this.mailGrid.ShowRowErrors = false;
             this.mailGrid.Size = new System.Drawing.Size(864, 553);
-            this.mailGrid.TabIndex = 5;
+            this.mailGrid.TabIndex = 27;
             // 
             // incomingRadio
             // 
@@ -812,7 +811,7 @@
             this.incomingRadio.Location = new System.Drawing.Point(80, 9);
             this.incomingRadio.Name = "incomingRadio";
             this.incomingRadio.Size = new System.Drawing.Size(68, 17);
-            this.incomingRadio.TabIndex = 6;
+            this.incomingRadio.TabIndex = 24;
             this.incomingRadio.Text = "Incoming";
             this.incomingRadio.UseVisualStyleBackColor = true;
             this.incomingRadio.CheckedChanged += new System.EventHandler(this.inboxFilterRadio_CheckedChanged);
@@ -824,7 +823,7 @@
             this.outgoingRadio.Location = new System.Drawing.Point(6, 9);
             this.outgoingRadio.Name = "outgoingRadio";
             this.outgoingRadio.Size = new System.Drawing.Size(68, 17);
-            this.outgoingRadio.TabIndex = 7;
+            this.outgoingRadio.TabIndex = 23;
             this.outgoingRadio.TabStop = true;
             this.outgoingRadio.Text = "Outgoing";
             this.outgoingRadio.UseVisualStyleBackColor = true;
@@ -869,7 +868,7 @@
             this.usersGrid.ShowEditingIcon = false;
             this.usersGrid.ShowRowErrors = false;
             this.usersGrid.Size = new System.Drawing.Size(864, 440);
-            this.usersGrid.TabIndex = 23;
+            this.usersGrid.TabIndex = 28;
             this.usersGrid.SelectionChanged += new System.EventHandler(this.usersGrid_SelectionChanged);
             // 
             // groupBox5
@@ -905,7 +904,7 @@
             this.linkLabel2.Location = new System.Drawing.Point(6, 43);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(44, 13);
-            this.linkLabel2.TabIndex = 18;
+            this.linkLabel2.TabIndex = 33;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "Delete";
             this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.userDeleteButton_Click);
@@ -941,7 +940,7 @@
             this.passwordTextbox.Location = new System.Drawing.Point(81, 49);
             this.passwordTextbox.Name = "passwordTextbox";
             this.passwordTextbox.Size = new System.Drawing.Size(183, 24);
-            this.passwordTextbox.TabIndex = 15;
+            this.passwordTextbox.TabIndex = 30;
             this.passwordTextbox.UseSystemPasswordChar = true;
             this.passwordTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTextbox_KeyDown);
             // 
@@ -952,7 +951,7 @@
             this.addUserButton.Location = new System.Drawing.Point(167, 90);
             this.addUserButton.Name = "addUserButton";
             this.addUserButton.Size = new System.Drawing.Size(97, 39);
-            this.addUserButton.TabIndex = 14;
+            this.addUserButton.TabIndex = 31;
             this.addUserButton.Text = "Add";
             this.addUserButton.UseVisualStyleBackColor = true;
             this.addUserButton.Click += new System.EventHandler(this.addUserButton_Click);
@@ -974,7 +973,7 @@
             this.usernameTextbox.Location = new System.Drawing.Point(81, 19);
             this.usernameTextbox.Name = "usernameTextbox";
             this.usernameTextbox.Size = new System.Drawing.Size(183, 24);
-            this.usernameTextbox.TabIndex = 4;
+            this.usernameTextbox.TabIndex = 29;
             // 
             // statusBar
             // 

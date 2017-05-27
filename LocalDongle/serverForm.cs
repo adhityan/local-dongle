@@ -36,11 +36,35 @@ namespace LocalDongle
 
         public static serverForm getInstance(ushort comId)
         {
+            serverForm form = null;
+
             try
             {
-                return new serverForm(comId);
+                form = new serverForm(comId);
+                return form;
             }
-            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); return null; }
+            catch (Exception ex)
+            {
+                if (Debugger.IsAttached) Debugger.Break();
+
+                try
+                {
+                    form.cleanup();
+                }
+                catch { }
+
+                MessageBox.Show(string.Format("Server could not be started. Exact error follows: \n\n{0}", ex.Message), "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        private void cleanup()
+        {
+            notifyIcon.Visible = false;
+            host.Close();
+            comm.Close();
+
+            this.Close();
         }
 
         private serverForm(ushort comId)
@@ -59,6 +83,7 @@ namespace LocalDongle
             initMailbox();
             initMessages();
 
+            notifyIcon.Visible = true;
             updateTimer.Enabled = true;
         }
 

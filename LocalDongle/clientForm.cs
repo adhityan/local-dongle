@@ -22,14 +22,30 @@ namespace LocalDongle
 
         public static clientForm getInstance(long uid, string url)
         {
+            DongleServiceContractClient client = null;
+            clientForm form = null;
+
             try
             {
-                DongleServiceContractClient client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url));
+                client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url));
                 client.Open();
 
-                return new clientForm(uid, client);
+                form = new clientForm(uid, client);
+                return form;
             }
-            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); return null; }
+            catch (Exception ex)
+            {
+                if (Debugger.IsAttached) Debugger.Break();
+
+                try
+                {
+                    client.Close();
+                    if (form != null) form.Close();
+                }
+                catch { }
+
+                return null;
+            }
         }
 
         private clientForm(long uid, DongleServiceContractClient client)

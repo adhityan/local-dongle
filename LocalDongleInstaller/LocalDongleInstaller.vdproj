@@ -511,7 +511,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Local Dongle"
         "ProductCode" = "8:{BFF7874B-8DB8-4A38-88E2-9941E22628C6}"
-        "PackageCode" = "8:{2A55B0A4-9844-4C9A-A0C3-24A829266E29}"
+        "PackageCode" = "8:{F4AD8811-7C1B-40F6-8280-61A6A69E3487}"
         "UpgradeCode" = "8:{1724A375-009C-4127-90E9-48B3068B31F0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
