@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using LocalDongle.DongleServer;
 using System.ServiceModel;
 using DongleService.Structs;
+using System.Diagnostics;
 
 namespace LocalDongle
 {
@@ -28,7 +29,7 @@ namespace LocalDongle
 
                 return new clientForm(uid, client);
             }
-            catch { return null; }
+            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); return null; }
         }
 
         private clientForm(long uid, DongleServiceContractClient client)
@@ -58,8 +59,7 @@ namespace LocalDongle
         private void initUserInfo()
         {
             this.user = client.getUserInfo(this.uid);
-            phoneLabel.Text = this.user.phone;
-            nameLabel.Text = this.user.name;
+            phoneLabel.Text = this.user.username;
         }
 
         private void clientForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -81,16 +81,19 @@ namespace LocalDongle
 
             try
             {
+                sendMessageButton.Enabled = false;
+
                 if (toGroupRadio.Checked)
                 {
                     long gid = (long)groupCombobox.SelectedValue;
+                    string group = ((KeyValuePair<long, string>)groupCombobox.SelectedItem).Value;
 
                     var response = client.sendGroupSMS(this.uid, gid, sendMessageTextbox.Text);
                     if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     else
                     {
                         phoneTextbox.Text = sendMessageTextbox.Text = "";
-                        MessageBox.Show("SMS sent!", "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show(string.Format("All messages to {0} succesfully sent!", group), "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
                 else
@@ -105,14 +108,18 @@ namespace LocalDongle
                     if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     else
                     {
+                        MessageBox.Show(string.Format("SMS sent to {0}!", phoneTextbox.Text), "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         phoneTextbox.Text = sendMessageTextbox.Text = "";
-                        MessageBox.Show("SMS sent!", "Hurray", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
             }
             catch
             {
                 MessageBox.Show("Server is offline", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                sendMessageButton.Enabled = true;
             }
         }
 

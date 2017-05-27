@@ -73,24 +73,28 @@ namespace LocalDongle
         {
             if (Util.IsElevated())
             {
-                ushort comId;
-
-                if (ushort.TryParse(portInputTextbox.Text, out comId))
+                if (portInputTextbox.Text.Length > 0)
                 {
-                    if ((new verifyServerCred()).ShowDialog() == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        var form = serverForm.getInstance(comId);
+                    ushort comId;
 
-                        if (form != null)
+                    if (ushort.TryParse(portInputTextbox.Text, out comId))
+                    {
+                        if ((new verifyServerCred()).ShowDialog() == System.Windows.Forms.DialogResult.Yes)
                         {
-                            form.Shown += (s, args) => this.Hide();
-                            form.Closed += (s, args) => this.Close();
-                            form.Show();
+                            var form = serverForm.getInstance(comId);
+
+                            if (form != null)
+                            {
+                                form.Shown += (s, args) => this.Hide();
+                                form.Closed += (s, args) => this.Close();
+                                form.Show();
+                            }
+                            else MessageBox.Show(string.Format("Could not connect to dongle at COM{0}", comId), "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
-                        else MessageBox.Show(string.Format("Could not connect to dongle at COM{0}", comId), "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                    else MessageBox.Show("COM ID Entered does not look valid", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else MessageBox.Show("COM ID Entered does not look valid", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else MessageBox.Show("COM ID can not be left blank", "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {

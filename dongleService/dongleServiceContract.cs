@@ -15,7 +15,7 @@ namespace DongleService
         LoginResponse login(string username, string password);
 
         [OperationContract]
-        ExecuteResponse addNewUser(string username, string password, string phone, string name, string email);
+        ExecuteResponse addNewUser(string username, string password);
 
         [OperationContract]
         ExecuteResponse updatePassword(long uid, string password);

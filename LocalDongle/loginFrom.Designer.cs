@@ -55,7 +55,7 @@
             this.usernameTextbox.MaxLength = 50;
             this.usernameTextbox.Name = "usernameTextbox";
             this.usernameTextbox.Size = new System.Drawing.Size(230, 22);
-            this.usernameTextbox.TabIndex = 0;
+            this.usernameTextbox.TabIndex = 5;
             this.usernameTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.usernameTextbox_KeyDown);
             // 
             // passwordTextbox
@@ -65,9 +65,9 @@
             this.passwordTextbox.Location = new System.Drawing.Point(78, 98);
             this.passwordTextbox.MaxLength = 25;
             this.passwordTextbox.Name = "passwordTextbox";
-            this.passwordTextbox.PasswordChar = '*';
             this.passwordTextbox.Size = new System.Drawing.Size(230, 22);
-            this.passwordTextbox.TabIndex = 1;
+            this.passwordTextbox.TabIndex = 6;
+            this.passwordTextbox.UseSystemPasswordChar = true;
             this.passwordTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.passwordTextbox_KeyDown);
             // 
             // loginButton
@@ -75,7 +75,7 @@
             this.loginButton.Location = new System.Drawing.Point(227, 136);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(81, 32);
-            this.loginButton.TabIndex = 2;
+            this.loginButton.TabIndex = 8;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
@@ -93,7 +93,7 @@
             this.clientBox.Location = new System.Drawing.Point(12, 126);
             this.clientBox.Name = "clientBox";
             this.clientBox.Size = new System.Drawing.Size(324, 184);
-            this.clientBox.TabIndex = 3;
+            this.clientBox.TabIndex = 9;
             this.clientBox.TabStop = false;
             this.clientBox.Text = "Client";
             // 
@@ -130,7 +130,7 @@
             this.registerButton.Location = new System.Drawing.Point(13, 146);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(46, 13);
-            this.registerButton.TabIndex = 4;
+            this.registerButton.TabIndex = 7;
             this.registerButton.TabStop = true;
             this.registerButton.Text = "Register";
             this.registerButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.registerButton_LinkClicked);
@@ -142,7 +142,7 @@
             this.serverpathTextbox.Location = new System.Drawing.Point(78, 19);
             this.serverpathTextbox.Name = "serverpathTextbox";
             this.serverpathTextbox.Size = new System.Drawing.Size(230, 22);
-            this.serverpathTextbox.TabIndex = 3;
+            this.serverpathTextbox.TabIndex = 4;
             this.serverpathTextbox.Text = "localhost";
             // 
             // serverBox
@@ -154,7 +154,7 @@
             this.serverBox.Location = new System.Drawing.Point(12, 12);
             this.serverBox.Name = "serverBox";
             this.serverBox.Size = new System.Drawing.Size(324, 102);
-            this.serverBox.TabIndex = 4;
+            this.serverBox.TabIndex = 0;
             this.serverBox.TabStop = false;
             this.serverBox.Text = "Server";
             // 
@@ -164,7 +164,7 @@
             this.testPortButton.Location = new System.Drawing.Point(13, 54);
             this.testPortButton.Name = "testPortButton";
             this.testPortButton.Size = new System.Drawing.Size(56, 32);
-            this.testPortButton.TabIndex = 16;
+            this.testPortButton.TabIndex = 2;
             this.testPortButton.Text = "Test";
             this.testPortButton.UseVisualStyleBackColor = true;
             this.testPortButton.Click += new System.EventHandler(this.testPortButton_Click);
@@ -186,7 +186,7 @@
             this.portInputTextbox.MaxLength = 50;
             this.portInputTextbox.Name = "portInputTextbox";
             this.portInputTextbox.Size = new System.Drawing.Size(230, 22);
-            this.portInputTextbox.TabIndex = 14;
+            this.portInputTextbox.TabIndex = 1;
             this.portInputTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.portInputTextbox_KeyDown);
             // 
             // startServerButton
@@ -195,7 +195,7 @@
             this.startServerButton.Location = new System.Drawing.Point(78, 54);
             this.startServerButton.Name = "startServerButton";
             this.startServerButton.Size = new System.Drawing.Size(230, 32);
-            this.startServerButton.TabIndex = 0;
+            this.startServerButton.TabIndex = 3;
             this.startServerButton.Text = "Start Server";
             this.startServerButton.UseVisualStyleBackColor = true;
             this.startServerButton.Click += new System.EventHandler(this.startServerButton_Click);

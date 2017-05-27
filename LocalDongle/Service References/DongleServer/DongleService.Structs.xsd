@@ -16,10 +16,7 @@
   <xs:element name="ExecuteResponse" nillable="true" type="tns:ExecuteResponse" />
   <xs:complexType name="UserObject">
     <xs:sequence>
-      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="id" type="xs:long" />
-      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

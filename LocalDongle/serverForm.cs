@@ -12,6 +12,7 @@ using System.Data.SqlServerCe;
 using System.Diagnostics;
 using GsmComm.GsmCommunication;
 using GsmComm.PduConverter;
+using LocalDongle.Structs;
 
 namespace LocalDongle
 {
@@ -23,12 +24,14 @@ namespace LocalDongle
         private GsmCommMain comm;
         private ushort comId;
 
-        private List<KeyValuePair<long, string>> users;
-        private List<KeyValuePair<long, string>> groups;
-        private List<KeyValuePair<long, string>> pending;
+        private BindingList<UserListItem> users;
+        private BindingList<GroupListItem> groups;
+        private BindingList<MessagesListItem> messages;
+        private BindingList<ContactsListItem> contacts;
 
-        private List<KeyValuePair<long, string>> mapped;
-        private List<KeyValuePair<long, string>> unMapped;
+        private BindingList<NotificationLongStringKeyValuePair> pending;
+        private BindingList<NotificationLongStringKeyValuePair> mapped;
+        private BindingList<NotificationLongStringKeyValuePair> unMapped;
         private DongleService.DongleService dongleService;
 
         public static serverForm getInstance(ushort comId)
@@ -37,7 +40,7 @@ namespace LocalDongle
             {
                 return new serverForm(comId);
             }
-            catch { return null; }
+            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); return null; }
         }
 
         private serverForm(ushort comId)
@@ -49,9 +52,11 @@ namespace LocalDongle
             initCom();
             initServer();
             initGroups();
+            initContacts();
+            initMappings();
             initUsers();
             initPendingUsers();
-            initMappings();
+            initMailbox();
             initMessages();
 
             updateTimer.Enabled = true;
@@ -111,16 +116,33 @@ namespace LocalDongle
             comm.MessageReceived += new MessageReceivedEventHandler(comm_MessageReceived);
             comm.PhoneDisconnected += new EventHandler(comm_PhoneDisconnected);
             comm.PhoneConnected += new EventHandler(comm_PhoneConnected);
+
+            if (!comm.IsConnected())
+            {
+                phoneStatusLabel.Text = "Phone disconnected";
+                phoneStatusLabel.ForeColor = Color.DarkRed;
+            }
+            else carrierName.Text = comm.GetCurrentOperator().TheOperator;
         }
 
         void comm_PhoneDisconnected(object sender, EventArgs e)
         {
-            
+            if (comm.IsOpen())
+            {
+                phoneStatusLabel.Text = "Phone disconnected";
+                phoneStatusLabel.ForeColor = Color.DarkRed;
+            }
         }
 
         void comm_PhoneConnected(object sender, EventArgs e)
         {
-            
+            if (comm.IsOpen())
+            {
+                phoneStatusLabel.Text = "Phone connected";
+                phoneStatusLabel.ForeColor = Color.Black;
+
+                carrierName.Text = comm.GetCurrentOperator().TheOperator;
+            }
         }
 
         private void initMessages()
@@ -132,6 +154,8 @@ namespace LocalDongle
         {
             try
             {
+                if(!comm.IsConnected()) return;
+
                 var sim_messages = comm.ReadMessages(PhoneMessageStatus.All, PhoneStorageType.Sim);
                 var phone_messages = comm.ReadMessages(PhoneMessageStatus.All, PhoneStorageType.Phone);
                 var messages = sim_messages.Union(phone_messages).ToArray();
@@ -247,38 +271,33 @@ namespace LocalDongle
 
         private void initGroups()
         {
-            groups = new List<KeyValuePair<long, string>>();
-            var reader = database.runTableQuery("select id, name from groups where enabled = 1");
+            groups = new BindingList<GroupListItem>();
+
+            readGroups();
+
+            groupsGrid.DataSource = groups;
+            if (groups.Count > 0) groupsGrid.Rows[0].Selected = true;
+        }
+
+        private void readGroups()
+        {
+            groups.Clear();
+            var reader = database.runTableQuery("select id, name from groups");
             while (reader.Read())
             {
-                groups.Add(new KeyValuePair<long, string>((long)reader[0], (string)reader[1]));
+                groups.Add(new GroupListItem((long)reader[0], (string)reader[1]));
             }
             reader.Close();
-
-            groupsList.DisplayMember = "Value";
-            groupsList.ValueMember = "Key";
-            groupsList.DataSource = new BindingSource(groups, null);
-
-            groupsDeleteDropdown.DisplayMember = "Value";
-            groupsDeleteDropdown.ValueMember = "Key";
-            groupsDeleteDropdown.DataSource = new BindingSource(groups, null);
         }
 
         private void initUsers()
         {
-            users = new List<KeyValuePair<long, string>>();
-            mapped = new List<KeyValuePair<long, string>>();
-            unMapped = new List<KeyValuePair<long, string>>();
+            users = new BindingList<UserListItem>();
 
             readUsers();
 
-            usersList.DisplayMember = "Value";
-            usersList.ValueMember = "Key";
-            usersList.DataSource = new BindingSource(users, null);
-
-            usersDeleteDropdown.DisplayMember = "Value";
-            usersDeleteDropdown.ValueMember = "Key";
-            usersDeleteDropdown.DataSource = new BindingSource(users, null);
+            usersGrid.DataSource = users;
+            if (users.Count > 0) usersGrid.Rows[0].Selected = true;
         }
 
         private void readUsers()
@@ -287,20 +306,41 @@ namespace LocalDongle
             var reader = database.runTableQuery("select id, username from users where enabled = 1");
             while (reader.Read())
             {
-                users.Add(new KeyValuePair<long, string>((long)reader[0], (string)reader[1]));
+                users.Add(new UserListItem((long)reader[0], (string)reader[1]));
+            }
+            reader.Close();
+        }
+
+        private void initContacts()
+        {
+            contacts = new BindingList<ContactsListItem>();
+
+            readContacts();
+
+            contactsGrid.DataSource = contacts;
+            if (contacts.Count > 0) contactsGrid.Rows[0].Selected = true;
+        }
+
+        private void readContacts()
+        {
+            contacts.Clear();
+            var reader = database.runTableQuery("select id, name, phone, designation from contacts");
+            while (reader.Read())
+            {
+                contacts.Add(new ContactsListItem((long)reader[0], (string)reader[1], (string)reader[2], (string)reader[3]));
             }
             reader.Close();
         }
 
         private void initPendingUsers()
         {
-            pending = new List<KeyValuePair<long, string>>();
+            pending = new BindingList<NotificationLongStringKeyValuePair>();
 
             readPendingUsers();
             
-            pendingDropdown.DisplayMember = "Value";
-            pendingDropdown.ValueMember = "Key";
-            pendingDropdown.DataSource = new BindingSource(pending, null);
+            pendingList.DisplayMember = "Name";
+            pendingList.ValueMember = "Key";
+            pendingList.DataSource = pending;
         }
 
         private void readPendingUsers()
@@ -311,7 +351,7 @@ namespace LocalDongle
             var reader = database.runTableQuery("select id, username from users where enabled = 0");
             while (reader.Read())
             {
-                pending.Add(new KeyValuePair<long, string>((long)reader[0], (string)reader[1]));
+                pending.Add(new NotificationLongStringKeyValuePair((long)reader[0], (string)reader[1]));
             }
             reader.Close();
 
@@ -320,18 +360,61 @@ namespace LocalDongle
 
         private void initMappings()
         {
-            mapped = new List<KeyValuePair<long, string>>();
-            unMapped = new List<KeyValuePair<long, string>>();
+            mapped = new BindingList<NotificationLongStringKeyValuePair>();
+            unMapped = new BindingList<NotificationLongStringKeyValuePair>();
 
-            notMappedList.DisplayMember = "Value";
+            notMappedList.DisplayMember = "Name";
             notMappedList.ValueMember = "Key";
-            notMappedList.DataSource = new BindingSource(unMapped, null);
+            notMappedList.DataSource = unMapped;
 
-            alreadyMappedList.DisplayMember = "Value";
+            alreadyMappedList.DisplayMember = "Name";
             alreadyMappedList.ValueMember = "Key";
-            alreadyMappedList.DataSource = new BindingSource(mapped, null);
+            alreadyMappedList.DataSource = mapped;
 
             updateUserGroupMappings();
+        }
+
+        private void updateUserGroupMappings()
+        {
+            try
+            {
+                if (mapped == null || unMapped == null) return;
+
+                mapped.Clear();
+                unMapped.Clear();
+
+                if (contacts.Count == 0 || groups.Count == 0)
+                {
+                    ((BindingList<NotificationLongStringKeyValuePair>)notMappedList.DataSource).ResetBindings();
+                    ((BindingList<NotificationLongStringKeyValuePair>)alreadyMappedList.DataSource).ResetBindings();
+                    return;
+                }
+
+                var row = (ContactsListItem)contactsGrid.SelectedRows[0].DataBoundItem;
+                long uid = row.ID;
+
+                SqlCeCommand command = new SqlCeCommand("select group_id from users_groups where user_id = @uid");
+                command.Parameters.AddWithValue("@uid", uid.ToString());
+                var reader = database.runTableQuery(command);
+
+                List<long> mappedIds = new List<long>();
+                while (reader.Read())
+                {
+                    mappedIds.Add((long)reader[0]);
+                }
+                reader.Close();
+
+                foreach (var item in groups)
+                {
+                    var gid = item.ID;
+                    if (mappedIds.Contains(gid)) mapped.Add(new NotificationLongStringKeyValuePair(gid, item.Name));
+                    else unMapped.Add(new NotificationLongStringKeyValuePair(gid, item.Name));
+                }
+
+                ((BindingList<NotificationLongStringKeyValuePair>)notMappedList.DataSource).ResetBindings();
+                ((BindingList<NotificationLongStringKeyValuePair>)alreadyMappedList.DataSource).ResetBindings();
+            }
+            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); }
         }
 
         private void stopServerButton_Click(object sender, EventArgs e)
@@ -356,116 +439,90 @@ namespace LocalDongle
                 var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
-                    groups.Add(new KeyValuePair<long, string>((long)result, groupAddTextbox.Text));
-                    ((BindingSource)groupsList.DataSource).ResetBindings(false);
-                    ((BindingSource)groupsDeleteDropdown.DataSource).ResetBindings(false);
+                    groups.Add(new GroupListItem((long)result, groupAddTextbox.Text));
+                    ((BindingList<GroupListItem>)groupsGrid.DataSource).ResetBindings();
                     groupAddTextbox.Text = "";
+
+                    if (groups.Count == 1) groupsGrid.Rows[0].Selected = true;
+                    MessageBox.Show("Group created!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 else MessageBox.Show("Adding new group failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch { MessageBox.Show("That group name is already taken", "Try again!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
+            catch (Exception ex) { MessageBox.Show("Something went wrong", "Try again!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
 
             updateUserGroupMappings(); 
         }
 
         private void groupDeleteButton_Click(object sender, EventArgs e)
         {
-            try
+            if (MessageBox.Show("Do you want to delete the selected groups?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
             {
-                int index = groupsDeleteDropdown.SelectedIndex;
-                long id = (long)groupsDeleteDropdown.SelectedValue;
-
-                SqlCeCommand command = new SqlCeCommand("delete from groups where id = @id");
-                command.Parameters.AddWithValue("@id", id.ToString());
-
-                var result = DongleData.Instance.runExecQuery(command);
-                if (result != 0)
+                try
                 {
-                    command = new SqlCeCommand("delete from users_groups where group_id = @id");
-                    command.Parameters.AddWithValue("@id", id.ToString());
-                    DongleData.Instance.runExecQuery(command);
+                    foreach (DataGridViewRow row in groupsGrid.SelectedRows.AsParallel())
+                    {
+                        var listItem = (GroupListItem)row.DataBoundItem;
+                        long id = listItem.ID;
+                        string name = listItem.Name;
 
-                    groups.RemoveAt(index);
-                    ((BindingSource)groupsList.DataSource).ResetBindings(false);
-                    ((BindingSource)groupsDeleteDropdown.DataSource).ResetBindings(false);
+                        SqlCeCommand command = new SqlCeCommand("delete from groups where id = @id");
+                        command.Parameters.AddWithValue("@id", id.ToString());
+
+                        var result = DongleData.Instance.runExecQuery(command);
+                        if (result != 0)
+                        {
+                            command = new SqlCeCommand("delete from users_groups where group_id = @id");
+                            command.Parameters.AddWithValue("@id", id.ToString());
+                            DongleData.Instance.runExecQuery(command);
+                        }
+                        else MessageBox.Show(string.Format("Deleting group {0} failed", name), "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    readGroups();
+                    ((BindingList<GroupListItem>)groupsGrid.DataSource).ResetBindings();
+
+                    if (groups.Count > 0) groupsGrid.Rows[0].Selected = true;
+                    else editGroupGrid.Enabled = false;
                 }
-                else MessageBox.Show("Deleting the group failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch { MessageBox.Show("Something went wrong", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
+                catch { MessageBox.Show("Something went wrong", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
 
-            updateUserGroupMappings();
+                updateUserGroupMappings();
+            }
         }
 
-        private void userDeleteButton_Click(object sender, EventArgs e)
+        private void userDeleteButton_Click(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            try
+            if (MessageBox.Show("Do you want to delete the selected user?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
             {
-                int index = usersDeleteDropdown.SelectedIndex;
-                long id = (long)usersDeleteDropdown.SelectedValue;
-
-                SqlCeCommand command = new SqlCeCommand("delete from users where id = @id");
-                command.Parameters.AddWithValue("@id", id.ToString());
-
-                var result = DongleData.Instance.runExecQuery(command);
-                if (result != 0)
+                try
                 {
-                    command = new SqlCeCommand("delete from users_groups where user_id = @id");
-                    command.Parameters.AddWithValue("@id", id.ToString());
-                    DongleData.Instance.runExecQuery(command);
+                    foreach (DataGridViewRow row in usersGrid.SelectedRows.AsParallel())
+                    {
+                        var listItem = (UserListItem)row.DataBoundItem;
+                        long id = listItem.ID;
+                        string name = listItem.Name;
 
-                    users.RemoveAt(index);
-                    ((BindingSource)usersList.DataSource).ResetBindings(false);
-                    ((BindingSource)usersDeleteDropdown.DataSource).ResetBindings(false);
+                        SqlCeCommand command = new SqlCeCommand("delete from users where id = @id");
+                        command.Parameters.AddWithValue("@id", id.ToString());
+
+                        var result = DongleData.Instance.runExecQuery(command);
+                        if (result != 0)
+                        {
+                            command = new SqlCeCommand("delete from users_groups where user_id = @id");
+                            command.Parameters.AddWithValue("@id", id.ToString());
+                            DongleData.Instance.runExecQuery(command);
+                        }
+                        else MessageBox.Show(string.Format("Deleting user {0} failed", name), "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    readUsers();
+                    ((BindingList<UserListItem>)usersGrid.DataSource).ResetBindings();
+                    if (users.Count == 0) editUsersGroup.Enabled = false;
                 }
-                else MessageBox.Show("Deleting the user failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                catch { MessageBox.Show("Something went wrong", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); }
+
+                updateUserGroupMappings();
             }
-            catch { MessageBox.Show("Something went wrong", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
-
-            updateUserGroupMappings();
-        }
-
-        private void updateUserGroupMappings()
-        {
-            try
-            {
-                mapped.Clear();
-                unMapped.Clear();
-
-                if (users.Count == 0 || groups.Count == 0)
-                {
-                    ((BindingSource)notMappedList.DataSource).ResetBindings(false);
-                    ((BindingSource)alreadyMappedList.DataSource).ResetBindings(false);
-                    return;
-                }
-
-                long id = (long)usersList.SelectedValue;
-                SqlCeCommand command = new SqlCeCommand("select group_id from users_groups where user_id = @uid");
-                command.Parameters.AddWithValue("@uid", id.ToString());
-                var reader = database.runTableQuery(command);
-
-                List<long> mappedIds = new List<long>();
-                while (reader.Read())
-                {
-                    mappedIds.Add((long)reader[0]);
-                }
-                reader.Close();
-
-                foreach (var item in groups)
-                {
-                    var gid = item.Key;
-                    if (mappedIds.Contains(gid)) mapped.Add(new KeyValuePair<long, string>(gid, item.Value));
-                    else unMapped.Add(new KeyValuePair<long, string>(gid, item.Value));
-                }
-
-                ((BindingSource)notMappedList.DataSource).ResetBindings(false);
-                ((BindingSource)alreadyMappedList.DataSource).ResetBindings(false);
-            }
-            catch { }
-        }
-
-        private void usersList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            updateUserGroupMappings();
         }
 
         private void mapButton_Click(object sender, EventArgs e)
@@ -473,9 +530,13 @@ namespace LocalDongle
             try
             {
                 int gIndex = notMappedList.SelectedIndex;
-                string value = ((KeyValuePair<long, string>)notMappedList.SelectedItem).Value;
-                long gid = (long)notMappedList.SelectedValue;
-                long uid = (long)usersList.SelectedValue;
+                var selectedItem = ((NotificationLongStringKeyValuePair)notMappedList.SelectedItem);
+                string value = selectedItem.Name;
+                long gid = selectedItem.ID;
+
+                var row = (ContactsListItem)contactsGrid.SelectedRows[0].DataBoundItem;
+                long uid = row.ID;
+                string name = row.Name;
 
                 SqlCeCommand command = new SqlCeCommand("insert into users_groups(user_id, group_id) values(@uid, @gid)");
                 command.Parameters.AddWithValue("@uid", uid.ToString());
@@ -484,11 +545,12 @@ namespace LocalDongle
                 var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
-                    mapped.Add(new KeyValuePair<long, string>(gid, value));
+                    mapped.Add(new NotificationLongStringKeyValuePair(gid, value));
                     unMapped.RemoveAt(gIndex);
 
-                    ((BindingSource)notMappedList.DataSource).ResetBindings(false);
-                    ((BindingSource)alreadyMappedList.DataSource).ResetBindings(false);
+                    ((BindingList<NotificationLongStringKeyValuePair>)notMappedList.DataSource).ResetBindings();
+                    ((BindingList<NotificationLongStringKeyValuePair>)alreadyMappedList.DataSource).ResetBindings();
+                    MessageBox.Show(string.Format("{0} added to group {1}", name, value), "Success!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
                 else MessageBox.Show("Mapping user to group failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -500,9 +562,13 @@ namespace LocalDongle
             try
             {
                 int gIndex = alreadyMappedList.SelectedIndex;
-                string value = ((KeyValuePair<long, string>)alreadyMappedList.SelectedItem).Value;
-                long gid = (long)alreadyMappedList.SelectedValue;
-                long uid = (long)usersList.SelectedValue;
+                var selectedItem = ((NotificationLongStringKeyValuePair)alreadyMappedList.SelectedItem);
+                string value = selectedItem.Name;
+                long gid = selectedItem.ID;
+
+                var row = (ContactsListItem)contactsGrid.SelectedRows[0].DataBoundItem;
+                long uid = row.ID;
+                string name = row.Name;
 
                 SqlCeCommand command = new SqlCeCommand("delete from users_groups where user_id = @uid and group_id = @gid");
                 command.Parameters.AddWithValue("@uid", uid.ToString());
@@ -511,35 +577,51 @@ namespace LocalDongle
                 var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
-                    unMapped.Add(new KeyValuePair<long, string>(gid, value));
+                    unMapped.Add(new NotificationLongStringKeyValuePair(gid, value));
                     mapped.RemoveAt(gIndex);
 
-                    ((BindingSource)notMappedList.DataSource).ResetBindings(false);
-                    ((BindingSource)alreadyMappedList.DataSource).ResetBindings(false);
+                    ((BindingList<NotificationLongStringKeyValuePair>)notMappedList.DataSource).ResetBindings();
+                    ((BindingList<NotificationLongStringKeyValuePair>)alreadyMappedList.DataSource).ResetBindings();
+                    MessageBox.Show(string.Format("{0} removed from group {1}", name, value), "Success!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
                 else MessageBox.Show("Un mapping user from group failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch { if (Debugger.IsAttached) Debugger.Break(); }
         }
 
-        private void addUserButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void addUserButton_Click(object sender, EventArgs e)
         {
-            var result = (new registerForm()).ShowDialog();
-
-            if (result == System.Windows.Forms.DialogResult.OK)
+            try
             {
-                MessageBox.Show("User added", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SqlCeCommand command = new SqlCeCommand("insert into users(username, password) values(@username, @password)");
+                command.Parameters.AddWithValue("@username", usernameTextbox.Text);
+                command.Parameters.AddWithValue("@password", passwordTextbox.Text);
 
-                readUsers();
-                ((BindingSource)usersList.DataSource).ResetBindings(false);
-                ((BindingSource)usersDeleteDropdown.DataSource).ResetBindings(false);
-                if (users.Count == 1) updateUserGroupMappings();
+                var result = DongleData.Instance.runExecQuery(command);
+                if (result != 0)
+                {
+                    usernameTextbox.Text = passwordTextbox.Text = "";
+
+                    readUsers();
+                    ((BindingList<UserListItem>)usersGrid.DataSource).ResetBindings();
+                    if (users.Count == 1) usersGrid.Rows[0].Selected = true;
+                    MessageBox.Show("User added", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else MessageBox.Show("Adding new user failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            catch { MessageBox.Show("The user name is already taken", "Try again!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
         }
 
         private void resetPasswordButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            long uid = (long)usersList.SelectedValue;
+            if (usersGrid.SelectedRows.Count > 1)
+            {
+                MessageBox.Show("Select a single user then try to reset password", "Try again!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var row = (UserListItem)usersGrid.SelectedRows[0].DataBoundItem;
+            long uid = row.ID;
             var result = (new passwordResetForm(uid)).ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK)
@@ -552,9 +634,10 @@ namespace LocalDongle
         {
             try
             {
-                long uid = (long)pendingDropdown.SelectedValue;
-                string uvalue = ((KeyValuePair<long, string>)pendingDropdown.SelectedItem).Value;
-                int uindex = usersList.SelectedIndex;
+                var selectedItem = (NotificationLongStringKeyValuePair)pendingList.SelectedItem;
+                long uid = selectedItem.ID;
+                string uvalue = selectedItem.Name;
+                int uindex = pendingList.SelectedIndex;
 
                 SqlCeCommand command = new SqlCeCommand("update users set enabled = 1 where id = @uid");
                 command.Parameters.AddWithValue("@uid", uid.ToString());
@@ -562,12 +645,12 @@ namespace LocalDongle
                 var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0)
                 {
-                    users.Add(new KeyValuePair<long, string>(uid, uvalue));
                     pending.RemoveAt(uindex);
 
-                    ((BindingSource)usersList.DataSource).ResetBindings(false);
-                    ((BindingSource)usersDeleteDropdown.DataSource).ResetBindings(false);
-                    ((BindingSource)pendingDropdown.DataSource).ResetBindings(false);
+                    readUsers();
+                    ((BindingList<NotificationLongStringKeyValuePair>)pendingList.DataSource).ResetBindings();
+                    ((BindingList<UserListItem>)usersGrid.DataSource).ResetBindings();
+                    if (users.Count == 1) usersGrid.Rows[0].Selected = true;
                 }
                 else MessageBox.Show("User could not be approved", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -578,8 +661,8 @@ namespace LocalDongle
         {
             try
             {
-                int index = pendingDropdown.SelectedIndex;
-                long id = (long)pendingDropdown.SelectedValue;
+                int index = pendingList.SelectedIndex;
+                long id = ((NotificationLongStringKeyValuePair)pendingList.SelectedItem).ID;
 
                 SqlCeCommand command = new SqlCeCommand("delete from users where id = @id");
                 command.Parameters.AddWithValue("@id", id.ToString());
@@ -588,7 +671,7 @@ namespace LocalDongle
                 if (result != 0)
                 {
                     pending.RemoveAt(index);
-                    ((BindingSource)pendingDropdown.DataSource).ResetBindings(false);
+                    ((BindingList<NotificationLongStringKeyValuePair>)pendingList.DataSource).ResetBindings();
                 }
                 else MessageBox.Show("Deleting pending user failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -597,13 +680,268 @@ namespace LocalDongle
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
+            loadCorrectData();
             readPendingUsers();
-            ((BindingSource)pendingDropdown.DataSource).ResetBindings(false);
+            ((BindingList<NotificationLongStringKeyValuePair>)pendingList.DataSource).ResetBindings();
+
+            filterStartDatepicker.MaxDate = filterEndDatepicker.MaxDate = DateTime.Now;
         }
 
         private void showMailboxButton_Click(object sender, EventArgs e)
         {
             (new mailboxForm()).ShowDialog();
+        }
+
+        private void initMailbox()
+        {
+            messages = new BindingList<MessagesListItem>();
+            mailGrid.DataSource = messages;
+            loadCorrectData();
+
+            updateTimer.Enabled = true;
+        }
+
+        private void loadCorrectData()
+        {
+            if (outgoingRadio.Checked) loadSentData();
+            else if (incomingRadio.Checked) loadReceivedData();
+        }
+
+        private void loadSentData()
+        {
+            DateTime start = new DateTime(2017, 1, 1);
+            if (filterStartDatepicker.Checked) start = filterStartDatepicker.Value;
+
+            DateTime end = DateTime.Now;
+            if (filterEndDatepicker.Checked) end = filterEndDatepicker.Value;
+
+            SqlCeCommand command = new SqlCeCommand("select id, recepiant, message from sms_sent where timestamp > @start and timestamp < @end");
+            command.Parameters.AddWithValue("@start", start.ToString());
+            command.Parameters.AddWithValue("@end", end.ToString());
+            var result = DongleData.Instance.runTableQuery(command);
+
+            messages.Clear();
+            while (result.Read())
+            {
+                messages.Add(new MessagesListItem((long)result[0], result.GetString(1), result.GetString(2)));
+            }
+
+            ((BindingList<MessagesListItem>)mailGrid.DataSource).ResetBindings();
+        }
+
+        private void loadReceivedData()
+        {
+            DateTime start = new DateTime(2017, 1, 1);
+            if (filterStartDatepicker.Checked) start = filterStartDatepicker.Value;
+
+            DateTime end = DateTime.Now;
+            if (filterEndDatepicker.Checked) end = filterEndDatepicker.Value;
+
+            SqlCeCommand command = new SqlCeCommand("select id, sender, message from sms_received where timestamp > @start and timestamp < @end");
+            command.Parameters.AddWithValue("@start", start.ToString());
+            command.Parameters.AddWithValue("@end", end.ToString());
+            var result = DongleData.Instance.runTableQuery(command);
+
+            messages.Clear();
+            while (result.Read())
+            {
+                messages.Add(new MessagesListItem((long)result[0], result.GetString(1), result.GetString(2)));
+            }
+
+            ((BindingList<MessagesListItem>)mailGrid.DataSource).ResetBindings();
+        }
+
+        private void inboxFilterRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            loadCorrectData();
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            loadCorrectData();
+        }
+
+        private void passwordTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                addUserButton.PerformClick();
+            }
+        }
+
+        private void groupAddTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                groupAddButton.PerformClick();
+            }
+        }
+
+        private void groupsGrid_SelectionChanged(object sender, EventArgs e)
+        {
+            if (groupsGrid.SelectedRows.Count == 0)
+            {
+                deleteGroupBox.Enabled = false;
+            }
+            else
+            {
+                deleteGroupBox.Enabled = true;
+            }
+
+            if (groupsGrid.SelectedRows.Count == 0) return;
+            if (groupsGrid.SelectedRows.Count > 1)
+            {
+                editGroupGrid.Enabled = false;
+                return;
+            }
+
+            editGroupGrid.Enabled = true;
+            var row = (GroupListItem)groupsGrid.SelectedRows[0].DataBoundItem;
+            string name = row.Name;
+            groupEditTextbox.Text = name;
+        }
+
+        private void usersGrid_SelectionChanged(object sender, EventArgs e)
+        {
+            if (usersGrid.SelectedRows.Count == 0) return;
+            else if (usersGrid.SelectedRows.Count > 1)
+            {
+                editUsersGroup.Enabled = false;
+                return;
+            }
+
+            editUsersGroup.Enabled = true;
+        }
+
+        private void groupEditButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (GroupListItem)groupsGrid.SelectedRows[0].DataBoundItem;
+                long id = row.ID;
+
+                SqlCeCommand command = new SqlCeCommand("update groups set name = @name where id = @id");
+                command.Parameters.AddWithValue("@id", id.ToString());
+                command.Parameters.AddWithValue("@name", groupEditTextbox.Text);
+
+                var result = DongleData.Instance.runExecQuery(command);
+                if (result != 0)
+                {
+                    readGroups();
+                    ((BindingList<GroupListItem>)groupsGrid.DataSource).ResetBindings();
+                    MessageBox.Show("Group name updated", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            catch { MessageBox.Show("Something went wrong", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
+        }
+
+        private void contactsGrid_SelectionChanged(object sender, EventArgs e)
+        {
+            if (contactsGrid.SelectedRows.Count == 0) return;
+            else if (contactsGrid.SelectedRows.Count > 1)
+            {
+                editContactGroup.Enabled = editMappingsGroup.Enabled = false;
+                return;
+            }
+
+            editContactGroup.Enabled = editMappingsGroup.Enabled = true;
+            var row = (ContactsListItem)contactsGrid.SelectedRows[0].DataBoundItem;
+            string name = row.Name;
+            string phone = row.Phone;
+            string designation = row.Designation;
+
+            contactNameEditTextbox.Text = name;
+            contactPhoneEditTextbox.Text = phone;
+            contactDesignationEditTextbox.Text = designation;
+
+            updateUserGroupMappings();
+        }
+
+        private void contactAddButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SqlCeCommand command = new SqlCeCommand("insert into contacts(name, phone, designation) values(@name, @phone, @designation)");
+                command.Parameters.AddWithValue("@name", contactNameAddTextbox.Text);
+                command.Parameters.AddWithValue("@phone", contactPhoneAddTextbox.Text);
+                command.Parameters.AddWithValue("@designation", contactDesignationAddTextbox.Text);
+
+                var result = DongleData.Instance.runExecQuery(command);
+                if (result != 0)
+                {
+                    contactDesignationAddTextbox.Text = contactNameAddTextbox.Text = contactPhoneAddTextbox.Text = "";
+
+                    readContacts();
+                    ((BindingList<ContactsListItem>)contactsGrid.DataSource).ResetBindings();
+                    if (users.Count == 1) contactsGrid.Rows[0].Selected = true;
+                    MessageBox.Show("Contact added", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else MessageBox.Show("Adding new contact failed", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch { MessageBox.Show("The phone number is already added", "Try again!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
+        }
+
+        private void contactEditButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (ContactsListItem)contactsGrid.SelectedRows[0].DataBoundItem;
+                long id = row.ID;
+
+                SqlCeCommand command = new SqlCeCommand("update contacts set name = @name, designation = @designation, phone = @phone where id = @id");
+                command.Parameters.AddWithValue("@id", id.ToString());
+                command.Parameters.AddWithValue("@name", contactNameEditTextbox.Text);
+                command.Parameters.AddWithValue("@phone", contactPhoneEditTextbox.Text);
+                command.Parameters.AddWithValue("@designation", contactDesignationEditTextbox.Text);
+
+                var result = DongleData.Instance.runExecQuery(command);
+                if (result != 0)
+                {
+                    readContacts();
+                    ((BindingList<ContactsListItem>)contactsGrid.DataSource).ResetBindings();
+                    MessageBox.Show("Contact details updated", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            catch { MessageBox.Show("Something went wrong", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
+        }
+
+        private void deleteContactButton_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to delete the selected contact?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+            {
+                try
+                {
+                    var row = (ContactsListItem)contactsGrid.SelectedRows[0].DataBoundItem;
+                    long id = row.ID;
+
+                    SqlCeCommand command = new SqlCeCommand("delete from contacts where id = @id");
+                    command.Parameters.AddWithValue("@id", id.ToString());
+
+                    var result = DongleData.Instance.runExecQuery(command);
+                    if (result != 0)
+                    {
+                        readContacts();
+                        ((BindingList<ContactsListItem>)contactsGrid.DataSource).ResetBindings();
+
+                        if (contacts.Count > 0) contactsGrid.Rows[0].Selected = true;
+                        else editContactGroup.Enabled = editMappingsGroup.Enabled = false;
+                        MessageBox.Show("Contact deleted", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+                catch { MessageBox.Show("Something went wrong", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); }
+            }
+        }
+
+        private void filterStartDatepicker_ValueChanged(object sender, EventArgs e)
+        {
+            loadCorrectData();
+            if (filterStartDatepicker.Checked) filterEndDatepicker.MinDate = filterStartDatepicker.Value;
+        }
+
+        private void filterEndDatepicker_ValueChanged(object sender, EventArgs e)
+        {
+            loadCorrectData();
+            if (filterEndDatepicker.Checked) filterStartDatepicker.MaxDate = filterEndDatepicker.Value;
         }
     }
 }

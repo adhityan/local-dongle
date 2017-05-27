@@ -19,7 +19,7 @@ namespace LocalDongle.DongleServer {
         DongleService.Structs.LoginResponse login(string username, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/addNewUser", ReplyAction="http://tempuri.org/DongleServiceContract/addNewUserResponse")]
-        DongleService.Structs.ExecuteResponse addNewUser(string username, string password, string phone, string name, string email);
+        DongleService.Structs.ExecuteResponse addNewUser(string username, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/DongleServiceContract/updatePassword", ReplyAction="http://tempuri.org/DongleServiceContract/updatePasswordResponse")]
         DongleService.Structs.ExecuteResponse updatePassword(long uid, string password);
@@ -68,8 +68,8 @@ namespace LocalDongle.DongleServer {
             return base.Channel.login(username, password);
         }
         
-        public DongleService.Structs.ExecuteResponse addNewUser(string username, string password, string phone, string name, string email) {
-            return base.Channel.addNewUser(username, password, phone, name, email);
+        public DongleService.Structs.ExecuteResponse addNewUser(string username, string password) {
+            return base.Channel.addNewUser(username, password);
         }
         
         public DongleService.Structs.ExecuteResponse updatePassword(long uid, string password) {

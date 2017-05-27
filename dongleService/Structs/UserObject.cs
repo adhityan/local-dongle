@@ -15,21 +15,9 @@ namespace DongleService.Structs
         [DataMember]
         public string username { get; set; }
 
-        [DataMember]
-        public string phone { get; set; }
-
-        [DataMember]
-        public string email { get; set; }
-
-        [DataMember]
-        public string name { get; set; }
-
-        public UserObject(long id, string username, string phone, string email, string name)
+        public UserObject(long id, string username)
         {
             this.id = id;
-            this.name = name;
-            this.phone = phone;
-            this.email = email;
             this.username = username;
         }
     }

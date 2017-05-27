@@ -33,14 +33,13 @@
             this.sendMessageButton = new System.Windows.Forms.Button();
             this.phoneTextbox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupCombobox = new System.Windows.Forms.ComboBox();
+            this.toGroupRadio = new System.Windows.Forms.RadioButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.toPhoneRadio = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.resetPasswordButton = new System.Windows.Forms.LinkLabel();
-            this.nameLabel = new System.Windows.Forms.Label();
             this.phoneLabel = new System.Windows.Forms.Label();
-            this.toPhoneRadio = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
-            this.toGroupRadio = new System.Windows.Forms.RadioButton();
-            this.groupCombobox = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -92,6 +91,51 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Send SMS";
             // 
+            // groupCombobox
+            // 
+            this.groupCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.groupCombobox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupCombobox.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupCombobox.FormattingEnabled = true;
+            this.groupCombobox.Location = new System.Drawing.Point(6, 162);
+            this.groupCombobox.MaxDropDownItems = 7;
+            this.groupCombobox.Name = "groupCombobox";
+            this.groupCombobox.Size = new System.Drawing.Size(356, 32);
+            this.groupCombobox.Sorted = true;
+            this.groupCombobox.TabIndex = 15;
+            this.groupCombobox.Visible = false;
+            // 
+            // toGroupRadio
+            // 
+            this.toGroupRadio.Location = new System.Drawing.Point(105, 139);
+            this.toGroupRadio.Name = "toGroupRadio";
+            this.toGroupRadio.Size = new System.Drawing.Size(56, 17);
+            this.toGroupRadio.TabIndex = 14;
+            this.toGroupRadio.Text = "Group";
+            this.toGroupRadio.UseVisualStyleBackColor = true;
+            this.toGroupRadio.CheckedChanged += new System.EventHandler(this.toPhoneRadio_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 141);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(20, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "To";
+            // 
+            // toPhoneRadio
+            // 
+            this.toPhoneRadio.Checked = true;
+            this.toPhoneRadio.Location = new System.Drawing.Point(43, 139);
+            this.toPhoneRadio.Name = "toPhoneRadio";
+            this.toPhoneRadio.Size = new System.Drawing.Size(56, 17);
+            this.toPhoneRadio.TabIndex = 0;
+            this.toPhoneRadio.TabStop = true;
+            this.toPhoneRadio.Text = "Phone";
+            this.toPhoneRadio.UseVisualStyleBackColor = true;
+            this.toPhoneRadio.CheckedChanged += new System.EventHandler(this.toPhoneRadio_CheckedChanged);
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.resetPasswordButton);
@@ -113,76 +157,18 @@
             this.resetPasswordButton.Text = "Reset Password";
             this.resetPasswordButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.resetPasswordButton_LinkClicked);
             // 
-            // nameLabel
-            // 
-            this.nameLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.nameLabel.AutoSize = true;
-            this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameLabel.Location = new System.Drawing.Point(6, 9);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(72, 31);
-            this.nameLabel.TabIndex = 11;
-            this.nameLabel.Text = "User";
-            // 
             // phoneLabel
             // 
             this.phoneLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.phoneLabel.AutoSize = true;
-            this.phoneLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.phoneLabel.Location = new System.Drawing.Point(577, 19);
+            this.phoneLabel.Font = new System.Drawing.Font("OPS08x10", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.phoneLabel.Location = new System.Drawing.Point(9, 9);
             this.phoneLabel.Name = "phoneLabel";
-            this.phoneLabel.Size = new System.Drawing.Size(99, 20);
+            this.phoneLabel.Size = new System.Drawing.Size(98, 22);
             this.phoneLabel.TabIndex = 12;
-            this.phoneLabel.Text = "9999999999";
-            // 
-            // toPhoneRadio
-            // 
-            this.toPhoneRadio.Checked = true;
-            this.toPhoneRadio.Location = new System.Drawing.Point(43, 139);
-            this.toPhoneRadio.Name = "toPhoneRadio";
-            this.toPhoneRadio.Size = new System.Drawing.Size(56, 17);
-            this.toPhoneRadio.TabIndex = 0;
-            this.toPhoneRadio.TabStop = true;
-            this.toPhoneRadio.Text = "Phone";
-            this.toPhoneRadio.UseVisualStyleBackColor = true;
-            this.toPhoneRadio.CheckedChanged += new System.EventHandler(this.toPhoneRadio_CheckedChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 141);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(20, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "To";
-            // 
-            // toGroupRadio
-            // 
-            this.toGroupRadio.Location = new System.Drawing.Point(105, 139);
-            this.toGroupRadio.Name = "toGroupRadio";
-            this.toGroupRadio.Size = new System.Drawing.Size(56, 17);
-            this.toGroupRadio.TabIndex = 14;
-            this.toGroupRadio.Text = "Group";
-            this.toGroupRadio.UseVisualStyleBackColor = true;
-            this.toGroupRadio.CheckedChanged += new System.EventHandler(this.toPhoneRadio_CheckedChanged);
-            // 
-            // groupCombobox
-            // 
-            this.groupCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.groupCombobox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupCombobox.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupCombobox.FormattingEnabled = true;
-            this.groupCombobox.Location = new System.Drawing.Point(6, 162);
-            this.groupCombobox.MaxDropDownItems = 7;
-            this.groupCombobox.Name = "groupCombobox";
-            this.groupCombobox.Size = new System.Drawing.Size(356, 32);
-            this.groupCombobox.Sorted = true;
-            this.groupCombobox.TabIndex = 15;
-            this.groupCombobox.Visible = false;
+            this.phoneLabel.Text = "username";
             // 
             // clientForm
             // 
@@ -190,9 +176,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(688, 257);
             this.Controls.Add(this.phoneLabel);
-            this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -217,7 +203,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.LinkLabel resetPasswordButton;
-        private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Label phoneLabel;
         private System.Windows.Forms.RadioButton toGroupRadio;
         private System.Windows.Forms.Label label2;

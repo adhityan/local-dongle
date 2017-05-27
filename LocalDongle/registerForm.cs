@@ -60,26 +60,21 @@ namespace LocalDongle
                 MessageBox.Show("Password must be atleast 5 characters", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
-            else if (emailTextbox.Text.Length > 0 && (!emailTextbox.Text.Contains('@') || !emailTextbox.Text.Contains('.') || emailTextbox.Text.Length < 5))
-            {
-                MessageBox.Show("Email appears to be invalid", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                return;
-            }
             else if (usernameTextbox.Text.Any(c => char.IsUpper(c)))
             {
                 MessageBox.Show("Username cannot have upper case characters", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 return;
             }
-            else if (phoneTextbox.Text.Length == 0)
-            {
-                MessageBox.Show("Phone number cannot be left empty", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                return;
-            }
-            else if (phoneTextbox.Text.Length != 10 || phoneTextbox.Text.Any(c => !char.IsDigit(c)))
-            {
-                MessageBox.Show("Phone number must be 10 digits", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                return;
-            }
+            //else if (phoneTextbox.Text.Length == 0)
+            //{
+            //    MessageBox.Show("Phone number cannot be left empty", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            //    return;
+            //}
+            //else if (phoneTextbox.Text.Length != 10 || phoneTextbox.Text.Any(c => !char.IsDigit(c)))
+            //{
+            //    MessageBox.Show("Phone number must be 10 digits", "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            //    return;
+            //}
 
             bool result = false;
             if (isServer) result = handleRegisterOnServer();
@@ -94,7 +89,7 @@ namespace LocalDongle
         {
             try
             {
-                var response = client.addNewUser(usernameTextbox.Text, passwordTextbox.Text, phoneTextbox.Text, nameTextbox.Text, emailTextbox.Text);
+                var response = client.addNewUser(usernameTextbox.Text, passwordTextbox.Text);
                 if (!response.status) MessageBox.Show(response.errorMessage, "Oops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return response.status;
             }
@@ -109,12 +104,9 @@ namespace LocalDongle
         {
             try
             {
-                SqlCeCommand command = new SqlCeCommand("insert into users(username, password, name, email, phone) values(@username, @password, @name, @email, @phone)");
+                SqlCeCommand command = new SqlCeCommand("insert into users(username, password) values(@username, @password)");
                 command.Parameters.AddWithValue("@username", usernameTextbox.Text);
                 command.Parameters.AddWithValue("@password", passwordTextbox.Text);
-                command.Parameters.AddWithValue("@phone", phoneTextbox.Text);
-                command.Parameters.AddWithValue("@email", emailTextbox.Text);
-                command.Parameters.AddWithValue("@name", nameTextbox.Text);
 
                 var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0) return true;

@@ -125,6 +125,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Structs\ContactsListItem.cs" />
+    <Compile Include="Structs\MessagesListItem.cs" />
+    <Compile Include="Structs\GroupListItem.cs" />
+    <Compile Include="Structs\NotificationLongStringKeyValuePair.cs" />
+    <Compile Include="Structs\UserListItem.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="verifyServerCred.cs">
       <SubType>Form</SubType>
@@ -169,6 +174,11 @@
     <None Include="Properties\DataSources\DongleService.Structs.LoginResponse.datasource" />
     <None Include="Properties\DataSources\DongleService.Structs.SMSObject.datasource" />
     <None Include="Properties\DataSources\DongleService.Structs.UserObject.datasource" />
+    <None Include="Properties\DataSources\LocalDongle.Structs.ContactsListItem.datasource" />
+    <None Include="Properties\DataSources\LocalDongle.Structs.GroupListItem.datasource" />
+    <None Include="Properties\DataSources\LocalDongle.Structs.MessagesListItem.datasource" />
+    <None Include="Properties\DataSources\LocalDongle.Structs.UserListItem.datasource" />
+    <None Include="Properties\DataSources\serverForm.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -214,9 +224,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DongleServer\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Structs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
       <Visible>False</Visible>

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace LocalDongle
 {
@@ -24,12 +25,23 @@ namespace LocalDongle
 
         private void launchButton_Click(object sender, EventArgs e)
         {
-            if (usernameTextbox.Text == username && passwordTextbox.Text == password)
+            if (!Debugger.IsAttached)
             {
-                this.DialogResult = System.Windows.Forms.DialogResult.Yes;
-                this.Close();
+                if (usernameTextbox.Text == username && passwordTextbox.Text == password)
+                {
+                    this.DialogResult = System.Windows.Forms.DialogResult.Yes;
+                    this.Close();
+                }
+                else MessageBox.Show("Invalid username or password", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             }
-            else MessageBox.Show("Invalid username or password", "Sorry", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            else
+            {
+                if (usernameTextbox.Text == "xxx")
+                {
+                    this.DialogResult = System.Windows.Forms.DialogResult.Yes;
+                    this.Close();
+                }
+            }
         }
 
         private void passwordTextbox_KeyDown(object sender, KeyEventArgs e)

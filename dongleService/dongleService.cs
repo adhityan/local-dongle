@@ -33,17 +33,14 @@ namespace DongleService
             else return new LoginResponse();
         }
 
-        public ExecuteResponse addNewUser(string username, string password, string phone, string name, string email)
+        public ExecuteResponse addNewUser(string username, string password)
         {
             try
             {
                 if (username.Length == 0) return new ExecuteResponse("user name cannot be empty");
-                SqlCeCommand command = new SqlCeCommand("insert into users(username, password, phone, name, email, enabled) values(@username, @password, @phone, @name, @email, 0)");
+                SqlCeCommand command = new SqlCeCommand("insert into users(username, password, enabled) values(@username, @password, 0)");
                 command.Parameters.AddWithValue("@username", username);
                 command.Parameters.AddWithValue("@password", password);
-                command.Parameters.AddWithValue("@phone", phone);
-                command.Parameters.AddWithValue("@email", email);
-                command.Parameters.AddWithValue("@name", name);
 
                 var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0) return new ExecuteResponse();
@@ -76,10 +73,11 @@ namespace DongleService
 
                 comm.SendMessage(new SmsSubmitPdu(messsage, recepiant));
 
-                SqlCeCommand command = new SqlCeCommand("insert into sms_sent(sender_id, recepiant, message) values(@sender_id, @recepiant, @message)");
+                SqlCeCommand command = new SqlCeCommand("insert into sms_sent(sender_id, recepiant, message, timestamp) values(@sender_id, @recepiant, @message, @timestamp)");
                 command.Parameters.AddWithValue("@sender_id", senderId.ToString());
                 command.Parameters.AddWithValue("@recepiant", recepiant);
                 command.Parameters.AddWithValue("@message", messsage);
+                command.Parameters.AddWithValue("@timestamp", DateTime.Now.ToString());
 
                 var result = DongleData.Instance.runExecQuery(command);
                 if (result != 0) return new ExecuteResponse();
@@ -105,7 +103,7 @@ namespace DongleService
                 }
                 reader.Close();
 
-                var commandSql = "select phone from users where id in ({0})";
+                var commandSql = "select phone from contacts where id in ({0})";
                 commandSql = string.Format(commandSql, Util.implodeToString(groups.Cast<object>().ToList()));
 
                 var recepiants = new List<string>();
@@ -119,12 +117,14 @@ namespace DongleService
                 bool allOK = true;
                 foreach (var recepiant in recepiants)
                 {
+                    if (recepiant.Length != 10) continue;
                     comm.SendMessage(new SmsSubmitPdu(messsage, recepiant));
 
-                    command = new SqlCeCommand("insert into sms_sent(sender_id, recepiant, message) values(@sender_id, @recepiant, @message)");
+                    command = new SqlCeCommand("insert into sms_sent(sender_id, recepiant, message, timestamp) values(@sender_id, @recepiant, @message, @timestamp)");
                     command.Parameters.AddWithValue("@sender_id", senderId.ToString());
                     command.Parameters.AddWithValue("@recepiant", recepiant);
                     command.Parameters.AddWithValue("@message", messsage);
+                    command.Parameters.AddWithValue("@timestamp", DateTime.Now.ToString());
 
                     var result = DongleData.Instance.runExecQuery(command);
                     if (result == 0) allOK = false;
@@ -133,14 +133,14 @@ namespace DongleService
                 if(allOK) return new ExecuteResponse();
                 else return new ExecuteResponse("Some messages could not be sent.");
             }
-            catch { return new ExecuteResponse("Message could not be sent"); }
+            catch { return new ExecuteResponse("Messages could not be sent"); }
         }
 
         public List<KeyValuePair<long, string>> getAllGroups()
         {
             var groups = new List<KeyValuePair<long, string>>();
 
-            var reader = DongleData.Instance.runTableQuery("select id, name from groups where enabled = 1");
+            var reader = DongleData.Instance.runTableQuery("select id, name from groups");
             while (reader.Read())
             {
                 groups.Add(new KeyValuePair<long, string>((long)reader[0], (string)reader[1]));
@@ -153,13 +153,13 @@ namespace DongleService
         public UserObject getUserInfo(long id)
         {
             UserObject response = null;
-            SqlCeCommand command = new SqlCeCommand("select id, username, email, name, phone from users where id = @uid");
+            SqlCeCommand command = new SqlCeCommand("select id, username from users where id = @uid");
             command.Parameters.AddWithValue("@uid", id.ToString());
 
             var reader = DongleData.Instance.runTableQuery(command);
             if (reader.Read())
             {
-                response = new UserObject((long)reader["id"], (string)reader["username"], (string)reader["phone"], (string)reader["email"], (string)reader["name"]);
+                response = new UserObject((long)reader["id"], (string)reader["username"]);
             }
             reader.Close();
 

@@ -53,9 +53,9 @@
             this.confirmPasswordTextbox.Location = new System.Drawing.Point(105, 51);
             this.confirmPasswordTextbox.MaxLength = 25;
             this.confirmPasswordTextbox.Name = "confirmPasswordTextbox";
-            this.confirmPasswordTextbox.PasswordChar = '*';
             this.confirmPasswordTextbox.Size = new System.Drawing.Size(173, 22);
             this.confirmPasswordTextbox.TabIndex = 2;
+            this.confirmPasswordTextbox.UseSystemPasswordChar = true;
             this.confirmPasswordTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.confirmPasswordTextbox_KeyDown);
             // 
             // passwordTextbox
@@ -65,9 +65,9 @@
             this.passwordTextbox.Location = new System.Drawing.Point(105, 12);
             this.passwordTextbox.MaxLength = 25;
             this.passwordTextbox.Name = "passwordTextbox";
-            this.passwordTextbox.PasswordChar = '*';
             this.passwordTextbox.Size = new System.Drawing.Size(173, 22);
             this.passwordTextbox.TabIndex = 1;
+            this.passwordTextbox.UseSystemPasswordChar = true;
             // 
             // label1
             // 
