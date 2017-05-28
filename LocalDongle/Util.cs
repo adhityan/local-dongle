@@ -30,5 +30,20 @@ namespace LocalDongle
                 return true;
             }
         }
+
+        public static string implodeToString(List<object> list)
+        {
+            string payload = "";
+
+            foreach (var item in list)
+            {
+                if (item is string) payload += "'" + item + "'";
+                else payload += item;
+                payload += ", ";
+            }
+
+            payload = payload.TrimEnd(new char[] { ',', ' ' });
+            return payload;
+        }
     }
 }

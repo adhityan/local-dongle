@@ -16,6 +16,10 @@ namespace LocalDongle
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
+                System.IO.Stream log4NetConfigStream = System.Reflection.Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("LocalDongle.log4NetConfig.xml");
+                log4net.Config.XmlConfigurator.Configure(log4NetConfigStream);
+
                 try
                 {
                     Form f = new loginFrom();

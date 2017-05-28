@@ -61,6 +61,9 @@
     <Reference Include="GSMCommunication, Version=1.21.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81, processorArchitecture=MSIL">
       <HintPath>..\packages\GSMComm.1.21.1\lib\GSMCommunication.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.8\lib\net40-client\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="PDUConverter, Version=1.21.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81, processorArchitecture=MSIL">
       <HintPath>..\packages\GSMComm.1.21.1\lib\PDUConverter.dll</HintPath>
     </Reference>
@@ -205,6 +208,7 @@
   <ItemGroup>
     <Content Include="background.jpg" />
     <Content Include="logo_ins_icon.ico" />
+    <EmbeddedResource Include="log4NetConfig.xml" />
     <None Include="Service References\DongleServer\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

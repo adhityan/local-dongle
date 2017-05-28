@@ -36,7 +36,6 @@
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.groupAddTextbox = new System.Windows.Forms.TextBox();
-            this.groupDeleteButton = new System.Windows.Forms.Button();
             this.rejectPendingUserButton = new System.Windows.Forms.Button();
             this.approvePendingUserButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -74,6 +73,7 @@
             this.groupsGrid = new System.Windows.Forms.DataGridView();
             this.deleteGroupBox = new System.Windows.Forms.GroupBox();
             this.editGroupGrid = new System.Windows.Forms.GroupBox();
+            this.deleteGroupButton = new System.Windows.Forms.LinkLabel();
             this.groupEditButton = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
             this.groupEditTextbox = new System.Windows.Forms.TextBox();
@@ -101,21 +101,24 @@
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.phoneStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.carrierName = new System.Windows.Forms.Label();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.phoneDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.usersInGroupListbox = new System.Windows.Forms.ListBox();
             this.designationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contactsListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.phoneDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.slowTimer = new System.Windows.Forms.Timer(this.components);
             this.iDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.iDDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.messageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sourceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.messageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timestampDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.messagesListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.iDDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.userListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.contactsListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.notifyMenuStrip.SuspendLayout();
             this.tabbityTab.SuspendLayout();
             this.membersTab.SuspendLayout();
@@ -136,10 +139,10 @@
             this.editUsersGroup.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.statusBar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.contactsListItemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupListItemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.messagesListItemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.userListItemBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.contactsListItemBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // notifyIcon
@@ -191,18 +194,6 @@
             this.groupAddTextbox.Size = new System.Drawing.Size(183, 24);
             this.groupAddTextbox.TabIndex = 17;
             this.groupAddTextbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.groupAddTextbox_KeyDown);
-            // 
-            // groupDeleteButton
-            // 
-            this.groupDeleteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupDeleteButton.ForeColor = System.Drawing.Color.Black;
-            this.groupDeleteButton.Location = new System.Drawing.Point(15, 27);
-            this.groupDeleteButton.Name = "groupDeleteButton";
-            this.groupDeleteButton.Size = new System.Drawing.Size(264, 67);
-            this.groupDeleteButton.TabIndex = 21;
-            this.groupDeleteButton.Text = "Delete Group(s)";
-            this.groupDeleteButton.UseVisualStyleBackColor = true;
-            this.groupDeleteButton.Click += new System.EventHandler(this.groupDeleteButton_Click);
             // 
             // rejectPendingUserButton
             // 
@@ -367,7 +358,6 @@
             this.contactsGrid.AllowUserToDeleteRows = false;
             this.contactsGrid.AllowUserToOrderColumns = true;
             this.contactsGrid.AllowUserToResizeRows = false;
-            this.contactsGrid.AutoGenerateColumns = false;
             this.contactsGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.contactsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.contactsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -375,7 +365,6 @@
             this.nameDataGridViewTextBoxColumn,
             this.phoneDataGridViewTextBoxColumn,
             this.designationDataGridViewTextBoxColumn});
-            this.contactsGrid.DataSource = this.contactsListItemBindingSource;
             this.contactsGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.contactsGrid.Location = new System.Drawing.Point(-1, 0);
             this.contactsGrid.Name = "contactsGrid";
@@ -640,17 +629,18 @@
             // 
             // deleteGroupBox
             // 
-            this.deleteGroupBox.Controls.Add(this.groupDeleteButton);
+            this.deleteGroupBox.Controls.Add(this.usersInGroupListbox);
             this.deleteGroupBox.Enabled = false;
             this.deleteGroupBox.Location = new System.Drawing.Point(560, 472);
             this.deleteGroupBox.Name = "deleteGroupBox";
             this.deleteGroupBox.Size = new System.Drawing.Size(295, 109);
             this.deleteGroupBox.TabIndex = 19;
             this.deleteGroupBox.TabStop = false;
-            this.deleteGroupBox.Text = "Delete Group";
+            this.deleteGroupBox.Text = "Users in group";
             // 
             // editGroupGrid
             // 
+            this.editGroupGrid.Controls.Add(this.deleteGroupButton);
             this.editGroupGrid.Controls.Add(this.groupEditButton);
             this.editGroupGrid.Controls.Add(this.label16);
             this.editGroupGrid.Controls.Add(this.groupEditTextbox);
@@ -661,6 +651,20 @@
             this.editGroupGrid.TabIndex = 18;
             this.editGroupGrid.TabStop = false;
             this.editGroupGrid.Text = "Edit Group";
+            // 
+            // deleteGroupButton
+            // 
+            this.deleteGroupButton.AutoSize = true;
+            this.deleteGroupButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.deleteGroupButton.ForeColor = System.Drawing.Color.Black;
+            this.deleteGroupButton.LinkColor = System.Drawing.Color.Black;
+            this.deleteGroupButton.Location = new System.Drawing.Point(6, 85);
+            this.deleteGroupButton.Name = "deleteGroupButton";
+            this.deleteGroupButton.Size = new System.Drawing.Size(44, 13);
+            this.deleteGroupButton.TabIndex = 21;
+            this.deleteGroupButton.TabStop = true;
+            this.deleteGroupButton.Text = "Delete";
+            this.deleteGroupButton.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.groupDeleteButton_Click);
             // 
             // groupEditButton
             // 
@@ -788,8 +792,9 @@
             this.mailGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.mailGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.iDDataGridViewTextBoxColumn2,
+            this.sourceDataGridViewTextBoxColumn,
             this.messageDataGridViewTextBoxColumn,
-            this.sourceDataGridViewTextBoxColumn});
+            this.timestampDataGridViewTextBoxColumn});
             this.mailGrid.DataSource = this.messagesListItemBindingSource;
             this.mailGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.mailGrid.Location = new System.Drawing.Point(3, 31);
@@ -998,9 +1003,42 @@
             this.carrierName.Font = new System.Drawing.Font("Palatino Linotype", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.carrierName.Location = new System.Drawing.Point(2, 9);
             this.carrierName.Name = "carrierName";
-            this.carrierName.Size = new System.Drawing.Size(165, 44);
+            this.carrierName.Size = new System.Drawing.Size(185, 44);
             this.carrierName.TabIndex = 22;
-            this.carrierName.Text = "No carrier";
+            this.carrierName.Text = "DVC, KTPS";
+            // 
+            // usersInGroupListbox
+            // 
+            this.usersInGroupListbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.usersInGroupListbox.FormattingEnabled = true;
+            this.usersInGroupListbox.Location = new System.Drawing.Point(12, 20);
+            this.usersInGroupListbox.Name = "usersInGroupListbox";
+            this.usersInGroupListbox.Size = new System.Drawing.Size(270, 78);
+            this.usersInGroupListbox.TabIndex = 35;
+            // 
+            // designationDataGridViewTextBoxColumn
+            // 
+            this.designationDataGridViewTextBoxColumn.DataPropertyName = "Designation";
+            this.designationDataGridViewTextBoxColumn.FillWeight = 30F;
+            this.designationDataGridViewTextBoxColumn.HeaderText = "Designation";
+            this.designationDataGridViewTextBoxColumn.Name = "designationDataGridViewTextBoxColumn";
+            this.designationDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // phoneDataGridViewTextBoxColumn
+            // 
+            this.phoneDataGridViewTextBoxColumn.DataPropertyName = "Phone";
+            this.phoneDataGridViewTextBoxColumn.FillWeight = 30F;
+            this.phoneDataGridViewTextBoxColumn.HeaderText = "Phone";
+            this.phoneDataGridViewTextBoxColumn.Name = "phoneDataGridViewTextBoxColumn";
+            this.phoneDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.FillWeight = 30F;
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // iDDataGridViewTextBoxColumn
             // 
@@ -1011,33 +1049,10 @@
             this.iDDataGridViewTextBoxColumn.ReadOnly = true;
             this.iDDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
-            // nameDataGridViewTextBoxColumn
+            // slowTimer
             // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.FillWeight = 30F;
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // phoneDataGridViewTextBoxColumn
-            // 
-            this.phoneDataGridViewTextBoxColumn.DataPropertyName = "Phone";
-            this.phoneDataGridViewTextBoxColumn.FillWeight = 30F;
-            this.phoneDataGridViewTextBoxColumn.HeaderText = "Phone";
-            this.phoneDataGridViewTextBoxColumn.Name = "phoneDataGridViewTextBoxColumn";
-            this.phoneDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // designationDataGridViewTextBoxColumn
-            // 
-            this.designationDataGridViewTextBoxColumn.DataPropertyName = "Designation";
-            this.designationDataGridViewTextBoxColumn.FillWeight = 30F;
-            this.designationDataGridViewTextBoxColumn.HeaderText = "Designation";
-            this.designationDataGridViewTextBoxColumn.Name = "designationDataGridViewTextBoxColumn";
-            this.designationDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // contactsListItemBindingSource
-            // 
-            this.contactsListItemBindingSource.DataSource = typeof(LocalDongle.Structs.ContactsListItem);
+            this.slowTimer.Interval = 15000;
+            this.slowTimer.Tick += new System.EventHandler(this.slowTimer_Tick);
             // 
             // iDDataGridViewTextBoxColumn1
             // 
@@ -1064,27 +1079,32 @@
             this.iDDataGridViewTextBoxColumn2.DataPropertyName = "ID";
             this.iDDataGridViewTextBoxColumn2.FillWeight = 10F;
             this.iDDataGridViewTextBoxColumn2.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn2.MinimumWidth = 10;
             this.iDDataGridViewTextBoxColumn2.Name = "iDDataGridViewTextBoxColumn2";
             this.iDDataGridViewTextBoxColumn2.ReadOnly = true;
-            // 
-            // messageDataGridViewTextBoxColumn
-            // 
-            this.messageDataGridViewTextBoxColumn.DataPropertyName = "Message";
-            this.messageDataGridViewTextBoxColumn.FillWeight = 45F;
-            this.messageDataGridViewTextBoxColumn.HeaderText = "Message";
-            this.messageDataGridViewTextBoxColumn.MinimumWidth = 45;
-            this.messageDataGridViewTextBoxColumn.Name = "messageDataGridViewTextBoxColumn";
-            this.messageDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // sourceDataGridViewTextBoxColumn
             // 
             this.sourceDataGridViewTextBoxColumn.DataPropertyName = "Source";
-            this.sourceDataGridViewTextBoxColumn.FillWeight = 45F;
+            this.sourceDataGridViewTextBoxColumn.FillWeight = 25F;
             this.sourceDataGridViewTextBoxColumn.HeaderText = "Source";
-            this.sourceDataGridViewTextBoxColumn.MinimumWidth = 45;
             this.sourceDataGridViewTextBoxColumn.Name = "sourceDataGridViewTextBoxColumn";
             this.sourceDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // messageDataGridViewTextBoxColumn
+            // 
+            this.messageDataGridViewTextBoxColumn.DataPropertyName = "Message";
+            this.messageDataGridViewTextBoxColumn.FillWeight = 40F;
+            this.messageDataGridViewTextBoxColumn.HeaderText = "Message";
+            this.messageDataGridViewTextBoxColumn.Name = "messageDataGridViewTextBoxColumn";
+            this.messageDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // timestampDataGridViewTextBoxColumn
+            // 
+            this.timestampDataGridViewTextBoxColumn.DataPropertyName = "Timestamp";
+            this.timestampDataGridViewTextBoxColumn.FillWeight = 25F;
+            this.timestampDataGridViewTextBoxColumn.HeaderText = "Timestamp";
+            this.timestampDataGridViewTextBoxColumn.Name = "timestampDataGridViewTextBoxColumn";
+            this.timestampDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // messagesListItemBindingSource
             // 
@@ -1109,6 +1129,10 @@
             // userListItemBindingSource
             // 
             this.userListItemBindingSource.DataSource = typeof(LocalDongle.Structs.UserListItem);
+            // 
+            // contactsListItemBindingSource
+            // 
+            this.contactsListItemBindingSource.DataSource = typeof(LocalDongle.Structs.ContactsListItem);
             // 
             // serverForm
             // 
@@ -1159,10 +1183,10 @@
             this.groupBox9.PerformLayout();
             this.statusBar.ResumeLayout(false);
             this.statusBar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.contactsListItemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupListItemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.messagesListItemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.userListItemBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.contactsListItemBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1174,7 +1198,6 @@
         private System.Windows.Forms.ContextMenuStrip notifyMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem showHideMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitMenuItem;
-        private System.Windows.Forms.Button groupDeleteButton;
         private System.Windows.Forms.TextBox groupAddTextbox;
         private System.Windows.Forms.ListBox pendingList;
         private System.Windows.Forms.ComboBox notMappedList;
@@ -1241,20 +1264,24 @@
         private System.Windows.Forms.DateTimePicker filterEndDatepicker;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.BindingSource contactsListItemBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
         private System.Windows.Forms.BindingSource groupListItemBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn messageDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sourceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource messagesListItemBindingSource;
         private System.Windows.Forms.BindingSource userListItemBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.LinkLabel deleteGroupButton;
+        private System.Windows.Forms.ListBox usersInGroupListbox;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn phoneDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn designationDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sourceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn messageDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timestampDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource messagesListItemBindingSource;
+        private System.Windows.Forms.BindingSource contactsListItemBindingSource;
+        private System.Windows.Forms.Timer slowTimer;
     }
 }

@@ -11,6 +11,7 @@ namespace LocalDongle.Structs
         private long id;
         private string source;
         private string message;
+        private DateTime timestamp;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String info)
@@ -49,6 +50,20 @@ namespace LocalDongle.Structs
             }
         }
 
+        public DateTime Timestamp
+        {
+            get { return this.timestamp; }
+
+            set
+            {
+                if (value != this.timestamp)
+                {
+                    this.timestamp = value;
+                    NotifyPropertyChanged("Timestamp");
+                }
+            }
+        }
+
         public string Source
         {
             get { return this.source; }
@@ -63,11 +78,12 @@ namespace LocalDongle.Structs
             }
         }
 
-        public MessagesListItem(long id, string source, string message)
+        public MessagesListItem(long id, string source, string message, DateTime timestamp)
         {
             this.id = id;
             this.source = source;
             this.message = message;
+            this.timestamp = timestamp;
         }
     }
 }

@@ -81,6 +81,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9B31646A2959474ABA4EBB20F4DB7BE0"
+        "OwnerKey" = "8:_6D778AF261004555BD81BBE5BB979DA4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B489CE4FEA4FAB128A36F5777C8B266E"
         "OwnerKey" = "8:_6D778AF261004555BD81BBE5BB979DA4"
         "MsmSig" = "8:_UNDEFINED"
@@ -113,6 +119,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6D778AF261004555BD81BBE5BB979DA4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9B31646A2959474ABA4EBB20F4DB7BE0"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -361,6 +373,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9B31646A2959474ABA4EBB20F4DB7BE0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_9B31646A2959474ABA4EBB20F4DB7BE0"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:log4net.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_1395697906A549089D6C2AEA37745607"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B489CE4FEA4FAB128A36F5777C8B266E"
             {
             "AssemblyRegister" = "3:1"
@@ -511,7 +554,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Local Dongle"
         "ProductCode" = "8:{BFF7874B-8DB8-4A38-88E2-9941E22628C6}"
-        "PackageCode" = "8:{F4AD8811-7C1B-40F6-8280-61A6A69E3487}"
+        "PackageCode" = "8:{9542D0F6-AFC9-4BB5-B262-35E9E4432C4E}"
         "UpgradeCode" = "8:{1724A375-009C-4127-90E9-48B3068B31F0}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

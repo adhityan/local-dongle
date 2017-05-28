@@ -103,16 +103,19 @@ namespace DongleService
                 }
                 reader.Close();
 
-                var commandSql = "select phone from contacts where id in ({0})";
-                commandSql = string.Format(commandSql, Util.implodeToString(groups.Cast<object>().ToList()));
-
                 var recepiants = new List<string>();
-                reader = DongleData.Instance.runTableQuery(commandSql);
-                while (reader.Read())
+                if (groups.Count > 0)
                 {
-                    recepiants.Add((string)reader[0]);
+                    var commandSql = "select phone from contacts where id in ({0})";
+                    commandSql = string.Format(commandSql, Util.implodeToString(groups.Cast<object>().ToList()));
+
+                    reader = DongleData.Instance.runTableQuery(commandSql);
+                    while (reader.Read())
+                    {
+                        recepiants.Add((string)reader[0]);
+                    }
+                    reader.Close();
                 }
-                reader.Close();
 
                 bool allOK = true;
                 foreach (var recepiant in recepiants)

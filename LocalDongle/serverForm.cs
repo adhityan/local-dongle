@@ -13,6 +13,7 @@ using System.Diagnostics;
 using GsmComm.GsmCommunication;
 using GsmComm.PduConverter;
 using LocalDongle.Structs;
+using log4net;
 
 namespace LocalDongle
 {
@@ -32,8 +33,10 @@ namespace LocalDongle
         private BindingList<NotificationLongStringKeyValuePair> pending;
         private BindingList<NotificationLongStringKeyValuePair> mapped;
         private BindingList<NotificationLongStringKeyValuePair> unMapped;
-        private DongleService.DongleService dongleService;
 
+        private DongleService.DongleService dongleService;
+        private static readonly ILog log = LogManager.GetLogger(typeof(serverForm));
+        
         public static serverForm getInstance(ushort comId)
         {
             serverForm form = null;
@@ -54,6 +57,7 @@ namespace LocalDongle
                 catch { }
 
                 MessageBox.Show(string.Format("Server could not be started. Exact error follows: \n\n{0}", ex.Message), "Dongle Connect", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                log.Error("Server could not be started", ex);
                 return null;
             }
         }
@@ -70,21 +74,38 @@ namespace LocalDongle
         private serverForm(ushort comId)
         {
             InitializeComponent();
+            log.Info("Starting server");
             database = DongleData.Instance;
             this.comId = comId;
 
             initCom();
+            log.Info("Finished Com");
+
             initServer();
+            log.Info("Finished Server");
+
             initGroups();
+            log.Info("Finished Groups");
+
             initContacts();
+            log.Info("Finished Contacts");
+
             initMappings();
+            log.Info("Finished Mappings");
+
             initUsers();
+            log.Info("Finished Users");
+
             initPendingUsers();
+            log.Info("Finished PendingUsers");
+
             initMailbox();
+            log.Info("Finished Mailbox");
+
             initMessages();
+            log.Info("Finished Messages");
 
             notifyIcon.Visible = true;
-            updateTimer.Enabled = true;
         }
 
         private void showStillRunning()
@@ -115,9 +136,12 @@ namespace LocalDongle
             }
             else
             {
+                log.Info("Server closing");
                 if (comm.IsOpen()) comm.Close();
+                log.Info("COM port closed");
 
                 host.Close();
+                log.Info("WCF closed");
                 notifyIcon.Visible = false;
             }
         }
@@ -147,7 +171,6 @@ namespace LocalDongle
                 phoneStatusLabel.Text = "Phone disconnected";
                 phoneStatusLabel.ForeColor = Color.DarkRed;
             }
-            else carrierName.Text = comm.GetCurrentOperator().TheOperator;
         }
 
         void comm_PhoneDisconnected(object sender, EventArgs e)
@@ -165,8 +188,6 @@ namespace LocalDongle
             {
                 phoneStatusLabel.Text = "Phone connected";
                 phoneStatusLabel.ForeColor = Color.Black;
-
-                carrierName.Text = comm.GetCurrentOperator().TheOperator;
             }
         }
 
@@ -180,6 +201,8 @@ namespace LocalDongle
             try
             {
                 if(!comm.IsConnected()) return;
+                cleanupAllUnreadMessages(); //JUG
+                log.Info("Reading all SMS");
 
                 var sim_messages = comm.ReadMessages(PhoneMessageStatus.All, PhoneStorageType.Sim);
                 var phone_messages = comm.ReadMessages(PhoneMessageStatus.All, PhoneStorageType.Phone);
@@ -205,13 +228,23 @@ namespace LocalDongle
                     }
                 }
             }
-            catch (Exception ex) { if (Debugger.IsAttached) Debugger.Break(); }
+            catch (Exception ex) { log.Error("Error reading incoming SMS", ex); if (Debugger.IsAttached) Debugger.Break(); }
         }
 
-        void comm_MessageReceived(object sender, MessageReceivedEventArgs e)
+        private void cleanupAllUnreadMessages()
+        {
+            log.Info("Cleaning incoming SMS local copies");
+            SqlCeCommand command = new SqlCeCommand("delete from sms_received");
+            DongleData.Instance.runExecQuery(command);
+        }
+
+        private void comm_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
             try
             {
+                log.Info("New incomming text detected. Ignored for manual refresh in this build."); //JUG
+                return;
+
                 if (e.IndicationObject is MemoryLocation)
                 {
                     MemoryLocation location = (MemoryLocation)e.IndicationObject;
@@ -281,7 +314,6 @@ namespace LocalDongle
                 catch { }
 
                 if (result != 0) comm.SendMessage(new SmsSubmitPdu(string.Format("Registration request accepted for {0}", username), sender));
-                else comm.SendMessage(new SmsSubmitPdu(string.Format("Username: {0} or phone number: {1} is already registered", username, sender), sender));
             }
         }
 
@@ -307,7 +339,7 @@ namespace LocalDongle
         private void readGroups()
         {
             groups.Clear();
-            var reader = database.runTableQuery("select id, name from groups");
+            var reader = database.runTableQuery("select id, name from groups order by id desc");
             while (reader.Read())
             {
                 groups.Add(new GroupListItem((long)reader[0], (string)reader[1]));
@@ -328,7 +360,7 @@ namespace LocalDongle
         private void readUsers()
         {
             users.Clear();
-            var reader = database.runTableQuery("select id, username from users where enabled = 1");
+            var reader = database.runTableQuery("select id, username from users where enabled = 1 order by id desc");
             while (reader.Read())
             {
                 users.Add(new UserListItem((long)reader[0], (string)reader[1]));
@@ -349,7 +381,7 @@ namespace LocalDongle
         private void readContacts()
         {
             contacts.Clear();
-            var reader = database.runTableQuery("select id, name, phone, designation from contacts");
+            var reader = database.runTableQuery("select id, name, phone, designation from contacts order by id desc");
             while (reader.Read())
             {
                 contacts.Add(new ContactsListItem((long)reader[0], (string)reader[1], (string)reader[2], (string)reader[3]));
@@ -373,7 +405,7 @@ namespace LocalDongle
             rejectPendingUserButton.Enabled = approvePendingUserButton.Enabled = false;
             pending.Clear();
 
-            var reader = database.runTableQuery("select id, username from users where enabled = 0");
+            var reader = database.runTableQuery("select id, username from users where enabled = 0 order by id desc");
             while (reader.Read())
             {
                 pending.Add(new NotificationLongStringKeyValuePair((long)reader[0], (string)reader[1]));
@@ -478,7 +510,7 @@ namespace LocalDongle
             updateUserGroupMappings(); 
         }
 
-        private void groupDeleteButton_Click(object sender, EventArgs e)
+        private void groupDeleteButton_Click(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (MessageBox.Show("Do you want to delete the selected groups?", "Please confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
             {
@@ -723,7 +755,7 @@ namespace LocalDongle
             mailGrid.DataSource = messages;
             loadCorrectData();
 
-            updateTimer.Enabled = true;
+            slowTimer.Enabled = updateTimer.Enabled = true;
         }
 
         private void loadCorrectData()
@@ -740,7 +772,7 @@ namespace LocalDongle
             DateTime end = DateTime.Now;
             if (filterEndDatepicker.Checked) end = filterEndDatepicker.Value;
 
-            SqlCeCommand command = new SqlCeCommand("select id, recepiant, message from sms_sent where timestamp > @start and timestamp < @end");
+            SqlCeCommand command = new SqlCeCommand("select id, recepiant, message, timestamp from sms_sent where timestamp > @start and timestamp < @end order by id desc");
             command.Parameters.AddWithValue("@start", start.ToString());
             command.Parameters.AddWithValue("@end", end.ToString());
             var result = DongleData.Instance.runTableQuery(command);
@@ -748,7 +780,7 @@ namespace LocalDongle
             messages.Clear();
             while (result.Read())
             {
-                messages.Add(new MessagesListItem((long)result[0], result.GetString(1), result.GetString(2)));
+                messages.Add(new MessagesListItem((long)result[0], result.GetString(1), result.GetString(2), result.GetDateTime(3)));
             }
 
             ((BindingList<MessagesListItem>)mailGrid.DataSource).ResetBindings();
@@ -762,7 +794,7 @@ namespace LocalDongle
             DateTime end = DateTime.Now;
             if (filterEndDatepicker.Checked) end = filterEndDatepicker.Value;
 
-            SqlCeCommand command = new SqlCeCommand("select id, sender, message from sms_received where timestamp > @start and timestamp < @end");
+            SqlCeCommand command = new SqlCeCommand("select id, sender, message, timestamp from sms_received where timestamp > @start and timestamp < @end order by id desc");
             command.Parameters.AddWithValue("@start", start.ToString());
             command.Parameters.AddWithValue("@end", end.ToString());
             var result = DongleData.Instance.runTableQuery(command);
@@ -770,7 +802,7 @@ namespace LocalDongle
             messages.Clear();
             while (result.Read())
             {
-                messages.Add(new MessagesListItem((long)result[0], result.GetString(1), result.GetString(2)));
+                messages.Add(new MessagesListItem((long)result[0], result.GetString(1), result.GetString(2), result.GetDateTime(3)));
             }
 
             ((BindingList<MessagesListItem>)mailGrid.DataSource).ResetBindings();
@@ -824,6 +856,37 @@ namespace LocalDongle
             var row = (GroupListItem)groupsGrid.SelectedRows[0].DataBoundItem;
             string name = row.Name;
             groupEditTextbox.Text = name;
+            updateUsersInGroup();
+        }
+
+        private void updateUsersInGroup()
+        {
+            var row = (GroupListItem)groupsGrid.SelectedRows[0].DataBoundItem;
+
+            SqlCeCommand command = new SqlCeCommand("select user_id from users_groups where group_id = @gid");
+            command.Parameters.AddWithValue("@gid", row.ID.ToString());
+
+            var groups = new List<long>();
+            var reader = DongleData.Instance.runTableQuery(command);
+            while (reader.Read())
+            {
+                groups.Add((long)reader[0]);
+            }
+            reader.Close();
+
+            usersInGroupListbox.Items.Clear();
+            if (groups.Count > 0)
+            {
+                var commandSql = "select name from contacts where id in ({0}) order by id desc";
+                commandSql = string.Format(commandSql, Util.implodeToString(groups.Cast<object>().ToList()));
+
+                reader = DongleData.Instance.runTableQuery(commandSql);
+                while (reader.Read())
+                {
+                    usersInGroupListbox.Items.Add((string)reader[0]);
+                }
+                reader.Close();
+            }
         }
 
         private void usersGrid_SelectionChanged(object sender, EventArgs e)
@@ -967,6 +1030,11 @@ namespace LocalDongle
         {
             loadCorrectData();
             if (filterEndDatepicker.Checked) filterStartDatepicker.MaxDate = filterEndDatepicker.Value;
+        }
+
+        private void slowTimer_Tick(object sender, EventArgs e)
+        {
+            processAllUnreadMessages(); //JUG
         }
     }
 }

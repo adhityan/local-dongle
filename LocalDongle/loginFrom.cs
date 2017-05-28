@@ -12,15 +12,22 @@ using LocalDongle.DongleServer;
 using System.ServiceModel;
 using DongleService;
 using GsmComm.GsmCommunication;
+using log4net;
+using System.IO;
 
 namespace LocalDongle
 {
     public partial class loginFrom : Form
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(loginFrom));
+
         public loginFrom()
         {
             InitializeComponent();
+            log.Info("Login launched");
+
             checkForActions();
+            checkForRelaunch();
         }
 
         private void checkForActions()
@@ -31,6 +38,19 @@ namespace LocalDongle
             {
                 if (args.Length > 2) portInputTextbox.Text = args[2];
                 gotoServerForm();
+            }
+        }
+
+        private void checkForRelaunch()
+        {
+            if (File.Exists("login.ini"))
+            {
+                var lines = File.ReadAllLines("login.ini");
+                if (lines.Count() > 0)
+                {
+                    serverpathTextbox.Text = lines[0];
+                    serverPathLabel.Visible = serverpathTextbox.Visible = false;
+                }
             }
         }
 
@@ -47,6 +67,12 @@ namespace LocalDongle
                     using (DongleServiceContractClient client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url)))
                     {
                         var response = client.login(usernameTextbox.Text, passwordTextbox.Text);
+
+                        if (!File.Exists("login.ini"))
+                        {
+                            File.WriteAllText("login.ini", serverpathTextbox.Text);
+                        }
+
                         if (response.IsSuccess) gotoClientForm(response.UID);
                         else MessageBox.Show("Invalid username or password!", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }

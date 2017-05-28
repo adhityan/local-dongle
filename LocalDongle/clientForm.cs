@@ -10,6 +10,7 @@ using LocalDongle.DongleServer;
 using System.ServiceModel;
 using DongleService.Structs;
 using System.Diagnostics;
+using log4net;
 
 namespace LocalDongle
 {
@@ -19,6 +20,7 @@ namespace LocalDongle
         private UserObject user;
         private DongleServiceContractClient client;
         private List<KeyValuePair<long, string>> groups;
+        private static readonly ILog log = LogManager.GetLogger(typeof(clientForm));
 
         public static clientForm getInstance(long uid, string url)
         {
@@ -29,12 +31,14 @@ namespace LocalDongle
             {
                 client = new DongleServiceContractClient(new NetTcpBinding(), new EndpointAddress(url));
                 client.Open();
+                log.Info("Connected to server");
 
                 form = new clientForm(uid, client);
                 return form;
             }
             catch (Exception ex)
             {
+                log.Error("Client could not be started", ex);
                 if (Debugger.IsAttached) Debugger.Break();
 
                 try
@@ -51,6 +55,8 @@ namespace LocalDongle
         private clientForm(long uid, DongleServiceContractClient client)
         {
             InitializeComponent();
+            log.Info("Client starting");
+
             this.uid = uid;
             this.client = client;
 
@@ -82,7 +88,9 @@ namespace LocalDongle
         {
             try
             {
+                log.Info("Client closing");
                 client.Close();
+                log.Info("Connection closed");
             }
             catch { }
         }

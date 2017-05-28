@@ -35,7 +35,7 @@
             this.clientBox = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.serverPathLabel = new System.Windows.Forms.Label();
             this.registerButton = new System.Windows.Forms.LinkLabel();
             this.serverpathTextbox = new System.Windows.Forms.TextBox();
             this.serverBox = new System.Windows.Forms.GroupBox();
@@ -51,7 +51,7 @@
             // 
             this.usernameTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.usernameTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.usernameTextbox.Location = new System.Drawing.Point(78, 57);
+            this.usernameTextbox.Location = new System.Drawing.Point(78, 19);
             this.usernameTextbox.MaxLength = 50;
             this.usernameTextbox.Name = "usernameTextbox";
             this.usernameTextbox.Size = new System.Drawing.Size(230, 22);
@@ -62,7 +62,7 @@
             // 
             this.passwordTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.passwordTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.passwordTextbox.Location = new System.Drawing.Point(78, 98);
+            this.passwordTextbox.Location = new System.Drawing.Point(78, 60);
             this.passwordTextbox.MaxLength = 25;
             this.passwordTextbox.Name = "passwordTextbox";
             this.passwordTextbox.Size = new System.Drawing.Size(230, 22);
@@ -84,7 +84,7 @@
             // 
             this.clientBox.Controls.Add(this.label3);
             this.clientBox.Controls.Add(this.label2);
-            this.clientBox.Controls.Add(this.label1);
+            this.clientBox.Controls.Add(this.serverPathLabel);
             this.clientBox.Controls.Add(this.registerButton);
             this.clientBox.Controls.Add(this.serverpathTextbox);
             this.clientBox.Controls.Add(this.usernameTextbox);
@@ -100,7 +100,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 103);
+            this.label3.Location = new System.Drawing.Point(13, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 13;
@@ -109,20 +109,20 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 61);
+            this.label2.Location = new System.Drawing.Point(13, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 12;
             this.label2.Text = "Username";
             // 
-            // label1
+            // serverPathLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 13);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "Server IP";
+            this.serverPathLabel.AutoSize = true;
+            this.serverPathLabel.Location = new System.Drawing.Point(13, 105);
+            this.serverPathLabel.Name = "serverPathLabel";
+            this.serverPathLabel.Size = new System.Drawing.Size(51, 13);
+            this.serverPathLabel.TabIndex = 11;
+            this.serverPathLabel.Text = "Server IP";
             // 
             // registerButton
             // 
@@ -139,7 +139,7 @@
             // 
             this.serverpathTextbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.serverpathTextbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverpathTextbox.Location = new System.Drawing.Point(78, 19);
+            this.serverpathTextbox.Location = new System.Drawing.Point(78, 100);
             this.serverpathTextbox.Name = "serverpathTextbox";
             this.serverpathTextbox.Size = new System.Drawing.Size(230, 22);
             this.serverpathTextbox.TabIndex = 4;
@@ -207,6 +207,7 @@
             this.ClientSize = new System.Drawing.Size(348, 322);
             this.Controls.Add(this.serverBox);
             this.Controls.Add(this.clientBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -235,7 +236,7 @@
         private System.Windows.Forms.LinkLabel registerButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label serverPathLabel;
         private System.Windows.Forms.Button testPortButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox portInputTextbox;

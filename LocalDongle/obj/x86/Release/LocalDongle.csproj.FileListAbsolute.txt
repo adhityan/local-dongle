@@ -6,8 +6,10 @@ C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bi
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Release\GSMCommServer.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Release\GSMCommShared.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Release\GSMCommunication.dll
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Release\log4net.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Release\PDUConverter.dll
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Release\dongleService.pdb
+C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\bin\Release\log4net.xml
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Release\LocalDongle.csprojResolveAssemblyReference.cache
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Release\LocalDongle.clientForm.resources
 C:\Users\Micros\Documents\Visual Studio 2010\Projects\LocalDongle\LocalDongle\obj\x86\Release\LocalDongle.loginFrom.resources
